@@ -7,6 +7,7 @@ import { DistanceCalculator } from './components/DistanceCalculator';
 import { fetchPortData } from './services/portService';
 import { PortData } from './types/port';
 import { isValidLocode } from './utils/portUtils';
+import { Disclaimer } from './components/Disclaimer';
 
 function App() {
   const [searchValue, setSearchValue] = useState('');
@@ -128,6 +129,7 @@ function App() {
               </>
             } />
           </Routes>
+          <Disclaimer />
         </div>
       </div>
     </BrowserRouter>
