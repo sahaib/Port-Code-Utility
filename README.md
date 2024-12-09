@@ -78,6 +78,21 @@ coordinates: string; // Format: "DDMMN DDDMME"
 - Uses the Haversine formula for nautical distance calculations
 - Coordinates are parsed from UN/LOCODE format (DDMMN DDDMME) to decimal degrees
 
+### MapBox API
+- The app uses MapBox GL JS for map visualization
+- The MapBox API key is required for the map to work
+
+## Development
+
+### CORS Proxy
+During development, the app uses the cors-anywhere proxy to handle CORS issues. This is **not** suitable for production use. Before deploying:
+
+1. Either set up your own proxy server
+2. Or handle CORS on your backend API
+3. Or use a production-ready CORS proxy service
+
+The proxy URL can be configured in `src/config/constants.ts`
+
 ## Contributing 🤝
 
 1. Fork the repository

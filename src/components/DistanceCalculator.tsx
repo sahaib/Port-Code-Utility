@@ -74,38 +74,47 @@ export const DistanceCalculator: React.FC<DistanceCalculatorProps> = ({ onSearch
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <SearchBar
-          value={originSearch}
-          countryCode={originCountry}
-          onChange={setOriginSearch}
-          onCountryChange={setOriginCountry}
-          onSubmit={() => {}}
-          isLoading={false}
-        />
-        <SearchBar
-          value={destSearch}
-          countryCode={destCountry}
-          onChange={setDestSearch}
-          onCountryChange={setDestCountry}
-          onSubmit={() => {}}
-          isLoading={false}
-        />
+        <div className="bg-white p-6 rounded-xl shadow-lg">
+          <h2 className="text-xl font-bold mb-4">Origin</h2>
+          <SearchBar
+            value={originSearch}
+            countryCode={originCountry}
+            onChange={setOriginSearch}
+            onCountryChange={setOriginCountry}
+            onSubmit={() => {}}
+            isLoading={false}
+            hideSearchIcon={true}
+          />
+        </div>
+        
+        <div className="bg-white p-6 rounded-xl shadow-lg">
+          <h2 className="text-xl font-bold mb-4">Destination</h2>
+          <SearchBar
+            value={destSearch}
+            countryCode={destCountry}
+            onChange={setDestSearch}
+            onCountryChange={setDestCountry}
+            onSubmit={() => {}}
+            isLoading={false}
+            hideSearchIcon={true}
+          />
+        </div>
       </div>
 
       <div className="flex justify-center">
-        <button
+      <button
           onClick={handleCalculateDistance}
           disabled={isLoading}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50"
+          className="claymorphic claymorphic-primary calculate-button px-6 py-3 rounded-lg flex items-center gap-2 disabled:opacity-50 font-medium text-lg"
         >
-          {isLoading ? (
-            <>
-              <Loader2 className="animate-spin" size={20} />
+  {isLoading ? (
+    <>
+      <Loader2 className="animate-spin" size={24} />
               <span>Calculating...</span>
             </>
           ) : (
             <>
-              <Ship size={20} />
+              <Ship size={24} />
               <span>Calculate Distance</span>
             </>
           )}

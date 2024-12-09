@@ -9,6 +9,7 @@ interface SearchBarProps {
   onCountryChange: (code: string) => void;
   onSubmit: (value: string, countryCode: string) => void;
   isLoading: boolean;
+  hideSearchIcon?: boolean;
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
@@ -17,7 +18,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   onChange,
   onCountryChange,
   onSubmit,
-  isLoading
+  isLoading,
+  hideSearchIcon
 }) => {
   const [countrySearch, setCountrySearch] = useState('');
   const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
@@ -34,7 +36,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div className="w-full max-w-2xl flex flex-col md:flex-row gap-2">
-      <div className="relative min-w-[250px]">
+      <div className="relative min-w-[250px] country-select">
         <div 
           className="w-full px-4 py-2 rounded-lg border border-gray-300 hover:border-gray-400 
                      flex items-center justify-between cursor-pointer bg-white"
@@ -98,20 +100,18 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && onSubmit(value, countryCode)}
-          placeholder="Enter LOCODE or port name..."
-          className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Enter LOCODE (in CAPS) or port name..."
+          className="search-input w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <button
-          onClick={() => onSubmit(value, countryCode)}
-          disabled={isLoading}
-          className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-gray-100 disabled:opacity-50"
-        >
-          {isLoading ? (
-            <Loader2 className="animate-spin" size={20} />
-          ) : (
-            <Search size={20} />
-          )}
-        </button>
+        {!hideSearchIcon && (
+          <button
+            onClick={() => onSubmit(value, countryCode)}
+            disabled={isLoading}
+            className="claymorphic-icon absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full"
+          >
+            {isLoading ? <Loader2 className="animate-spin" size={20} /> : <Search size={20} />}
+          </button>
+        )}
       </div>
     </div>
   );

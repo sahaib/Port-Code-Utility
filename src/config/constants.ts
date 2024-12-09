@@ -1,4 +1,16 @@
-export const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
+// Development proxy for local testing
+export const CORS_PROXY = import.meta.env.DEV 
+  ? 'https://cors-anywhere.herokuapp.com/'
+  : ''; // Empty string in production
+
+// Add a development warning
+if (import.meta.env.DEV) {
+  console.warn(
+    '⚠️ Using cors-anywhere proxy for development. ' +
+    'This should not be used in production.'
+  );
+}
+
 export const BASE_URL = 'https://service.unece.org/trade/locode';
 
 export const SUPPORTED_COUNTRIES = {
@@ -32,7 +44,7 @@ export const SUPPORTED_COUNTRIES = {
   'BQ': { code: 'BQ', name: 'Bonaire, Sint Eustatius and Saba', flag: '🇧🇶', endpoint: '/bq.htm' },
   'BA': { code: 'BA', name: 'Bosnia and Herzegovina', flag: '🇧🇦', endpoint: '/ba.htm' },
   'BW': { code: 'BW', name: 'Botswana', flag: '🇧🇼', endpoint: '/bw.htm' },
-  'BV': { code: 'BV', name: 'Bouvet Island', flag: '🇧🇻', endpoint: '/bv.htm' },
+  'BV': { code: 'BV', name: 'Bouvet Island', flag: '🇧��', endpoint: '/bv.htm' },
   'BR': { code: 'BR', name: 'Brazil', flag: '🇧🇷', endpoint: '/br.htm' },
   'IO': { code: 'IO', name: 'British Indian Ocean Territory', flag: '🇮🇴', endpoint: '/io.htm' },
   'BN': { code: 'BN', name: 'Brunei Darussalam', flag: '🇧🇳', endpoint: '/bn.htm' },
@@ -46,7 +58,7 @@ export const SUPPORTED_COUNTRIES = {
   'KY': { code: 'KY', name: 'Cayman Islands', flag: '🇰🇾', endpoint: '/ky.htm' },
   'CF': { code: 'CF', name: 'Central African Republic', flag: '🇨🇫', endpoint: '/cf.htm' },
   'TD': { code: 'TD', name: 'Chad', flag: '🇹🇩', endpoint: '/td.htm' },
-  'CL': { code: 'CL', name: 'Chile', flag: '���🇱', endpoint: '/cl.htm' },
+  'CL': { code: 'CL', name: 'Chile', flag: '🇱🇱', endpoint: '/cl.htm' },
   'CN': { code: 'CN', name: 'China', flag: '🇨🇳', endpoint: '/cn.htm' },
   'CX': { code: 'CX', name: 'Christmas Island', flag: '🇨🇽', endpoint: '/cx.htm' },
   'CC': { code: 'CC', name: 'Cocos (Keeling) Islands', flag: '🇨🇨', endpoint: '/cc.htm' },
@@ -214,7 +226,7 @@ export const SUPPORTED_COUNTRIES = {
   'LK': { code: 'LK', name: 'Sri Lanka', flag: '🇱🇰', endpoint: '/lk.htm' },
   'SD': { code: 'SD', name: 'Sudan', flag: '🇸🇩', endpoint: '/sd.htm' },
   'SR': { code: 'SR', name: 'Suriname', flag: '🇸🇷', endpoint: '/sr.htm' },
-  'SJ': { code: 'SJ', name: 'Svalbard and Jan Mayen', flag: '🇳🇯', endpoint: '/sj.htm' },
+  'SJ': { code: 'SJ', name: 'Svalbard and Jan Mayen', flag: '🇳🇴', endpoint: '/sj.htm' },
   'SE': { code: 'SE', name: 'Sweden', flag: '🇸🇪', endpoint: '/se.htm' },
   'CH': { code: 'CH', name: 'Switzerland', flag: '🇨🇭', endpoint: '/ch.htm' },
   'SY': { code: 'SY', name: 'Syrian Arab Republic', flag: '🇸🇾', endpoint: '/sy.htm' },
@@ -252,7 +264,6 @@ export const SUPPORTED_COUNTRIES = {
   'ZW': { code: 'ZW', name: 'Zimbabwe', flag: '🇿🇼', endpoint: '/zw.htm' }
 } as const;
 
-// Note: I've truncated the list for readability. Would you like me to continue with the complete list?
 
 export const FUNCTION_CODES = {
   '1': 'Port',

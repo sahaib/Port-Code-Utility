@@ -1,0 +1,78 @@
+.claymorphic-icon {
+  background: #ffffff;
+  box-shadow: 
+    2px 2px 4px #d1d4d9,
+    -2px -2px 4px #ffffff;
+  transition: all 0.2s ease;
+}
+
+.claymorphic-icon:hover {
+  background: #f8f9fa;
+  box-shadow: 
+    1px 1px 2px #d1d4d9,
+    -1px -1px 2px #ffffff;
+}
+
+.claymorphic-primary {
+  background: linear-gradient(145deg, #3b82f6, #2563eb);
+  color: white;
+  box-shadow: 
+    4px 4px 8px rgba(37, 99, 235, 0.2),
+    -4px -4px 8px rgba(59, 130, 246, 0.2),
+    inset 1px 1px 1px rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.claymorphic-primary:hover {
+  background: linear-gradient(145deg, #2563eb, #1d4ed8);
+  box-shadow: 
+    6px 6px 12px rgba(37, 99, 235, 0.3),
+    -6px -6px 12px rgba(59, 130, 246, 0.3),
+    inset 1px 1px 1px rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.claymorphic-primary:active {
+  background: linear-gradient(145deg, #1d4ed8, #2563eb);
+  box-shadow: 
+    inset 3px 3px 6px rgba(29, 78, 216, 0.4),
+    inset -3px -3px 6px rgba(37, 99, 235, 0.2);
+  transform: translateY(1px);
+}
+
+/* Add new navigation button styles */
+.nav-button {
+  background: linear-gradient(145deg, #f0f2f5, #ffffff);
+  box-shadow: 
+    4px 4px 8px #d1d4d9,
+    -4px -4px 8px #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.nav-button:hover {
+  background: linear-gradient(145deg, #ffffff, #f0f2f5);
+  box-shadow: 
+    6px 6px 12px #d1d4d9,
+    -6px -6px 12px #ffffff;
+  transform: translateY(-1px);
+}
+
+.nav-button.active {
+  background: linear-gradient(145deg, #3b82f6, #2563eb);
+  color: white;
+  box-shadow: 
+    4px 4px 8px rgba(37, 99, 235, 0.2),
+    -4px -4px 8px rgba(59, 130, 246, 0.2),
+    inset 1px 1px 1px rgba(255, 255, 255, 0.1);
+  transform: translateY(0);
+}
+
+.nav-button.guide {
+  color: #3b82f6;
+}
+
+.nav-button.guide:hover {
+  color: #2563eb;
+} 

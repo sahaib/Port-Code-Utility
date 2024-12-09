@@ -44,12 +44,15 @@ export const parseCoordinates = (coordString: string): Coordinates => {
   }
 };
 
-export const calculateDistance = (coord1: Coordinates, coord2: Coordinates): number => {
+export const calculateDistance = (
+  origin: { latitude: number; longitude: number },
+  destination: { latitude: number; longitude: number }
+): number => {
   const R = 3440.065; // Earth's radius in nautical miles
-  const φ1 = (coord1.latitude * Math.PI) / 180;
-  const φ2 = (coord2.latitude * Math.PI) / 180;
-  const Δφ = ((coord2.latitude - coord1.latitude) * Math.PI) / 180;
-  const Δλ = ((coord2.longitude - coord1.longitude) * Math.PI) / 180;
+  const φ1 = (origin.latitude * Math.PI) / 180;
+  const φ2 = (destination.latitude * Math.PI) / 180;
+  const Δφ = ((destination.latitude - origin.latitude) * Math.PI) / 180;
+  const Δλ = ((destination.longitude - origin.longitude) * Math.PI) / 180;
 
   const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
            Math.cos(φ1) * Math.cos(φ2) *
