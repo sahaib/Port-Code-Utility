@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "buildCommand": "npm run build:web",
+  "outputDirectory": "dist",
   "headers": [
     {
       "source": "/api/(.*)",
@@ -7,5 +9,8 @@
         { "key": "Access-Control-Allow-Origin", "value": "*" }
       ]
     }
+  ],
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
   ]
 }
