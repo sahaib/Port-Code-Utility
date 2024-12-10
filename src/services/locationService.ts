@@ -1,10 +1,11 @@
 import { PostalLocation, LocationSearchResult } from '../types/location';
+import { env } from '../config/env';
 
 export const searchPostalLocation = async (
   query: string,
   countryCode: string
 ): Promise<LocationSearchResult> => {
-  const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
+  const mapboxToken = env.MAPBOX_TOKEN;
   const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json`;
   
   const params = new URLSearchParams({

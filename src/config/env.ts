@@ -3,12 +3,14 @@ interface EnvConfig {
 }
 
 const getEnvConfig = (): EnvConfig => {
-  if (!import.meta.env.VITE_MAPBOX_TOKEN) {
+  const token = import.meta.env.VITE_MAPBOX_TOKEN;
+  
+  if (!token) {
     throw new Error('VITE_MAPBOX_TOKEN is required but not configured');
   }
   
   return {
-    MAPBOX_TOKEN: import.meta.env.VITE_MAPBOX_TOKEN
+    MAPBOX_TOKEN: token
   };
 };
 

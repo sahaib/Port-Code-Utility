@@ -9,6 +9,7 @@ import { isValidLocode } from '../utils/portUtils';
 import { LocationSearch } from './LocationSearch';
 import { getBounds, getZoomLevel } from '../utils/mapUtils';
 import '../styles/globals.css';
+import { env } from '../config/env';
   
 
 export const UnifiedDistanceCalculator: React.FC<{ isDark: boolean }> = ({ isDark }) => {
@@ -71,7 +72,7 @@ export const UnifiedDistanceCalculator: React.FC<{ isDark: boolean }> = ({ isDar
 
     try {
       const response = await fetch(
-        `https://api.mapbox.com/directions/v5/mapbox/driving/${origin.coordinates.longitude},${origin.coordinates.latitude};${destination.coordinates.longitude},${destination.coordinates.latitude}?geometries=geojson&access_token=${import.meta.env.VITE_MAPBOX_TOKEN}`
+        `https://api.mapbox.com/directions/v5/mapbox/driving/${origin.coordinates.longitude},${origin.coordinates.latitude};${destination.coordinates.longitude},${destination.coordinates.latitude}?geometries=geojson&access_token=${env.MAPBOX_TOKEN}`
       );
       const data = await response.json();
       
@@ -182,7 +183,7 @@ export const UnifiedDistanceCalculator: React.FC<{ isDark: boolean }> = ({ isDar
             {...viewport}
             onMove={evt => setViewport(evt.viewState)}
             mapStyle={isDark ? "mapbox://styles/mapbox/navigation-night-v1" : "mapbox://styles/mapbox/navigation-day-v1"}
-            mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
+            mapboxAccessToken={env.MAPBOX_TOKEN}
           >
             <NavigationControl />
             {origin && (
