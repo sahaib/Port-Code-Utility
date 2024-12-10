@@ -1,7 +1,5 @@
-// Proxy for local testing and production
-export const PROXY_URL = import.meta.env.DEV 
-  ? 'http://localhost:3001/api/proxy?url='
-  : '/api/proxy?url=';
+// Proxy URL should always be relative when using Vercel's API routes
+export const PROXY_URL = '/api/proxy?url=';
 
 export const BASE_URL = 'https://service.unece.org/trade/locode';
 
@@ -118,7 +116,7 @@ export const SUPPORTED_COUNTRIES = {
   'IT': { code: 'IT', name: 'Italy', flag: '🇮🇹', endpoint: '/it.htm' },
   'JM': { code: 'JM', name: 'Jamaica', flag: '🇯🇲', endpoint: '/jm.htm' },
   'JP': { code: 'JP', name: 'Japan', flag: '🇯🇵', endpoint: '/jp.htm' },
-  'JE': { code: 'JE', name: 'Jersey', flag: '🇯🇪', endpoint: '/je.htm' },
+  'JE': { code: 'JE', name: 'Jersey', flag: '����🇪', endpoint: '/je.htm' },
   'JO': { code: 'JO', name: 'Jordan', flag: '🇯🇴', endpoint: '/jo.htm' },
   'KZ': { code: 'KZ', name: 'Kazakhstan', flag: '🇰🇿', endpoint: '/kz.htm' },
   'KE': { code: 'KE', name: 'Kenya', flag: '🇰🇪', endpoint: '/ke.htm' },
@@ -134,7 +132,7 @@ export const SUPPORTED_COUNTRIES = {
   'LR': { code: 'LR', name: 'Liberia', flag: '🇱🇷', endpoint: '/lr.htm' },
   'LY': { code: 'LY', name: 'Libya', flag: '🇱🇾', endpoint: '/ly.htm' },
   'LI': { code: 'LI', name: 'Liechtenstein', flag: '🇱🇮', endpoint: '/li.htm' },
-  'LT': { code: 'LT', name: 'Lithuania', flag: '����🇹', endpoint: '/lt.htm' },
+  'LT': { code: 'LT', name: 'Lithuania', flag: '������🇹', endpoint: '/lt.htm' },
   'LU': { code: 'LU', name: 'Luxembourg', flag: '🇱🇺', endpoint: '/lu.htm' },
   'MO': { code: 'MO', name: 'Macao', flag: '🇲🇴', endpoint: '/mo.htm' },
   'MK': { code: 'MK', name: 'North Macedonia', flag: '🇲🇰', endpoint: '/mk.htm' },
@@ -239,7 +237,7 @@ export const SUPPORTED_COUNTRIES = {
   'UG': { code: 'UG', name: 'Uganda', flag: '🇺🇬', endpoint: '/ug.htm' },
   'UA': { code: 'UA', name: 'Ukraine', flag: '🇺🇦', endpoint: '/ua.htm' },
   'AE': { code: 'AE', name: 'United Arab Emirates', flag: '🇦🇪', endpoint: '/ae.htm' },
-  'GB': { code: 'GB', name: 'United Kingdom', flag: '🇬🇧', endpoint: '/gb.htm' },
+  'GB': { code: 'GB', name: 'United Kingdom', flag: '��🇧', endpoint: '/gb.htm' },
   'US': { code: 'US', name: 'United States', flag: '🇺🇸', endpoint: '/us.htm' },
   'UM': { code: 'UM', name: 'United States Minor Outlying Islands', flag: '🇺🇲', endpoint: '/um.htm' },
   'UY': { code: 'UY', name: 'Uruguay', flag: '🇺🇾', endpoint: '/uy.htm' },
