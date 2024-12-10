@@ -1,4 +1,6 @@
-export const PROXY_URL = '/api/proxy';
+export const PROXY_URL = import.meta.env.DEV
+  ? 'http://localhost:3001/api/proxy?url='
+  : 'https://portsindex-proxy.sahaibsingh001-ss.workers.dev/?url=';
 
 export const CLIENT_HEADERS = {
   'Accept': 'text/html,application/xhtml+xml',
