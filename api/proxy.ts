@@ -1,4 +1,5 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
+import fetch from 'node-fetch';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const targetUrl = req.query.url as string;
@@ -14,7 +15,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const response = await fetch(targetUrl, {
       headers: {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'User-Agent': 'Mozilla/5.0 (compatible; PortsIndex/1.0)',
         'Cache-Control': 'no-cache',
         'Pragma': 'no-cache'
       },
@@ -29,7 +30,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     
     const data = await response.text();
     
-    // Set CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, User-Agent');
