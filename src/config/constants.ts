@@ -1,8 +1,5 @@
 
-export const PROXY_URL = import.meta.env.DEV
-  ? 'http://localhost:3001/api/proxy?url=' // Local development URL
-  : 'https://portsindex.com/api/proxy?url='; // Production URL
-
+export const PROXY_URL = 'https://proxy.portsindex.workers.dev/?url=';
 export const BASE_URL = 'https://service.unece.org/trade/locode';
 
 export const SUPPORTED_COUNTRIES = {

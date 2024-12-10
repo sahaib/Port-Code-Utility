@@ -5,16 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "esbuild project/api/proxy.ts --bundle --outfile=dist/proxy.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-favicons": "node scripts/generate-favicons.js"
   },
   "dependencies": {
+    "@types/node-fetch": "^2.6.11",
     "lucide-react": "^0.344.0",
     "mapbox-gl": "^3.8.0",
     "node-fetch": "^2.7.0",
-    "@types/node-fetch": "^2.6.11",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-map-gl": "^7.1.7",
@@ -27,6 +27,7 @@
     "@vercel/node": "^3.2.29",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.18",
+    "esbuild": "^0.24.0",
     "eslint": "^9.9.1",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.11",
