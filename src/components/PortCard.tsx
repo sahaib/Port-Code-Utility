@@ -3,6 +3,7 @@ import { Anchor, MapPin, Calendar, Info, Plane, Ship, Train, Truck, Package, Glo
 import { STATUS_CODES, FUNCTION_DESCRIPTIONS } from '../config/locodeConstants';
 import { PortData } from '../types/port';
 import { getCountryInfo } from '../utils/countryUtils';
+import { parseUnlocodeDateFormat } from '../utils/dateUtils';
 
 interface PortCardProps {
   port: PortData;
@@ -129,10 +130,14 @@ export const PortCard: React.FC<PortCardProps> = ({ port }) => {
           </div>
         )}
         
-        <div className="flex items-center text-gray-600">
-          <Calendar size={18} className="mr-2" />
-          <span>Last updated: {port.date || 'Not available'}</span>
-        </div>
+        {port.date && (
+          <div className="flex items-center gap-2 mt-2">
+            <Calendar size={16} className="text-gray-500" />
+            <span className="text-sm text-gray-600">
+              Last updated: {parseUnlocodeDateFormat(port.date)}
+            </span>
+          </div>
+        )}
         
         {port.remarks && (
           <div className="flex items-start text-gray-600">

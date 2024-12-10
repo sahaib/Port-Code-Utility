@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatLastUpdateDate } from '../utils/dateUtils';
 
 export const Disclaimer: React.FC = () => {
   return (
@@ -9,7 +10,7 @@ export const Disclaimer: React.FC = () => {
           This tool is for informational purposes only. Distance calculations are approximations and should not be used for official navigation purposes.
         </li>
         <li>
-          UN/LOCODE data is sourced from the UNECE database and may not reflect real-time updates. Last update: {new Date().toLocaleDateString()}
+          UN/LOCODE data is sourced from the UNECE database and may not reflect real-time updates. Last update: {formatLastUpdateDate(new Date())}
         </li>
         <li>
           Map visualization is provided by Mapbox© and is subject to their terms of service.
