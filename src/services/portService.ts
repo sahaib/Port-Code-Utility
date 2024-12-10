@@ -25,7 +25,7 @@ export const fetchPortData = async (searchOptions: SearchOptions): Promise<PortR
     if (cachedData && (Date.now() - cachedData.timestamp) < CACHE_DURATION) {
       ports = cachedData.parsedPorts;
     } else {
-      const url = `${PROXY_URL}/${countryCode.toLowerCase()}.htm`;
+      const url = `${PROXY_URL}https://service.unece.org/trade/locode/${countryCode.toLowerCase()}.htm`;
       console.log('Requesting URL:', url);
 
       const response = await fetch(url, {
