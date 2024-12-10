@@ -1,5 +1,6 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import fetch from 'node-fetch';
+import https from 'https';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const targetUrl = req.query.url as string;
@@ -8,29 +9,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'URL parameter is required' });
   }
 
+  const agent = new https.Agent({
+    rejectUnauthorized: false
+  });
+
   try {
     const response = await fetch(targetUrl, {
+      agent,
       headers: {
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:123.0) Gecko/20100101 Firefox/123.0',
-        'Accept-Language': 'en-US,en;q=0.5',
-        'Connection': 'keep-alive',
-        'Upgrade-Insecure-Requests': '1',
-        'Sec-Fetch-Dest': 'document',
-        'Sec-Fetch-Mode': 'navigate',
-        'Sec-Fetch-Site': 'none',
-        'Sec-Fetch-User': '?1',
-        'Pragma': 'no-cache',
-        'Cache-Control': 'no-cache'
+        'Accept': 'text/html',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0',
+        'Host': 'service.unece.org',
+        'Referer': 'https://service.unece.org/',
+        'Connection': 'keep-alive'
       }
     });
     
     const data = await response.text();
     
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', '*');
-    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Content-Type', 'text/html');
     
     return res.status(200).send(data);
   } catch (error) {
