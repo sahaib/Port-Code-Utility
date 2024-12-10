@@ -1,23 +1,11 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  plugins: [
-    react(),
-    VitePWA({
-      strategies: 'injectManifest',
-      srcDir: 'src',
-      filename: 'service-worker.ts',
-      registerType: 'prompt',
-      injectRegister: 'auto',
-      manifest: false,
-      injectManifest: {
-        injectionPoint: undefined
-      }
-    })
-  ],
-  envPrefix: 'VITE_',
+  plugins: [react()],
+  optimizeDeps: {
+    exclude: ['lucide-react'],
+  },
   server: {
     port: 3001,
     host: true,
