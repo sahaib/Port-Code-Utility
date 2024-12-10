@@ -19,7 +19,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         'Cache-Control': 'no-cache',
         'Pragma': 'no-cache'
       },
-      signal: controller.signal
+      signal: controller.signal as any
     });
     
     clearTimeout(timeoutId);
