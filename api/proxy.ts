@@ -1,8 +1,6 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import { REQUEST_HEADERS } from '../src/config/constants';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Set CORS headers for all responses
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, User-Agent');
@@ -21,7 +19,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     console.log('Fetching:', targetUrl);
     
     const response = await fetch(targetUrl, {
-      headers: REQUEST_HEADERS
+      headers: {
+        'Accept': 'text/html',
+        'User-Agent': 'Mozilla/5.0',
+        'Origin': window.location.origin
+      }
     });
 
     if (!response.ok) {
@@ -30,8 +32,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const data = await response.text();
-    
-    // Set content type and send response
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     return res.status(200).send(data);
 
