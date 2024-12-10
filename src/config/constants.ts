@@ -1,7 +1,7 @@
 // Proxy for local testing and production
 export const PROXY_URL = import.meta.env.DEV 
   ? 'http://localhost:3001/api/proxy?url='
-  : '/api/proxy?url=';
+  : 'https://www.portsindex.com/api/proxy?url=';
 
 export const BASE_URL = 'https://service.unece.org/trade/locode';
 
@@ -134,7 +134,7 @@ export const SUPPORTED_COUNTRIES = {
   'LR': { code: 'LR', name: 'Liberia', flag: '🇱🇷', endpoint: '/lr.htm' },
   'LY': { code: 'LY', name: 'Libya', flag: '🇱🇾', endpoint: '/ly.htm' },
   'LI': { code: 'LI', name: 'Liechtenstein', flag: '🇱🇮', endpoint: '/li.htm' },
-  'LT': { code: 'LT', name: 'Lithuania', flag: '🇱🇹', endpoint: '/lt.htm' },
+  'LT': { code: 'LT', name: 'Lithuania', flag: '����🇹', endpoint: '/lt.htm' },
   'LU': { code: 'LU', name: 'Luxembourg', flag: '🇱🇺', endpoint: '/lu.htm' },
   'MO': { code: 'MO', name: 'Macao', flag: '🇲🇴', endpoint: '/mo.htm' },
   'MK': { code: 'MK', name: 'North Macedonia', flag: '🇲🇰', endpoint: '/mk.htm' },
