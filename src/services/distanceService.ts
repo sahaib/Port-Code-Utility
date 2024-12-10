@@ -2,6 +2,8 @@ import { BulkCalculationRow, BulkCalculationResult, ProcessingStats } from '../t
 import { searchPostalLocation } from './locationService';
 import { fetchPortData } from './portService';
 import { calculateDistance } from '../utils/distanceUtils';
+import { getMapboxToken } from '../config/mapbox';
+
 
 export const calculateBulkDistances = async (
   data: Array<BulkCalculationRow>,
@@ -85,13 +87,10 @@ async function getCoordinates(
         }
       }
 
-      // Case 2: Found in UN/LOCODE but no coordinates, try Mapbox with port name
-// Case 2: Found in UN/LOCODE but no coordinates, try Mapbox with port name
-// Case 2: Found in UN/LOCODE but no coordinates, try Mapbox with port name
-if (portData.ports.length > 0) {
-    try {
-      const portName = portData.ports[0].name;
-      const mapboxToken = window.VITE_MAPBOX_TOKEN || import.meta.env.VITE_MAPBOX_TOKEN;
+        if (portData.ports.length > 0) {
+        try {
+            const portName = portData.ports[0].name;
+            const mapboxToken = getMapboxToken();
       
       if (!mapboxToken) {
         console.error('Mapbox token not found');
