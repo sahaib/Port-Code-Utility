@@ -44,12 +44,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    // Fetch data from the target URL
+    // Fetch data from the target URL with manual redirect handling
     const response = await fetch(targetUrl, {
       headers: {
         'Accept': 'text/html,application/xhtml+xml',
         'User-Agent': 'Mozilla/5.0 (compatible; PortIndex/1.0)',
       },
+      redirect: 'manual', // Handle redirects manually
     });
 
     // Handle non-OK responses
