@@ -86,37 +86,43 @@ async function getCoordinates(
       }
 
       // Case 2: Found in UN/LOCODE but no coordinates, try Mapbox with port name
-      if (portData.ports.length > 0) {
-        try {
-          const portName = portData.ports[0].name;
-          const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
-          if (!mapboxToken) {
-            throw new Error('Mapbox token not configured');
-          }
-          
-          const params = new URLSearchParams({
-            access_token: mapboxToken,
-            types: 'poi',
-            limit: '1'
-          });
-
-          const searchQuery = encodeURIComponent(`${portName} port ${countryCode}`);
-          const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${searchQuery}.json?${params}`;
-          
-          const response = await fetch(url);
-          const data = await response.json();
-          
-          if (data.features && data.features.length > 0) {
-            return {
-              latitude: data.features[0].center[1],
-              longitude: data.features[0].center[0]
-            };
-          }
-          throw new Error(`Port ${location} (${portName}) found in UN/LOCODE but coordinates not available`);
-        } catch (error) {
-          throw new Error(`Port ${location} found but geocoding failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
-        }
+// Case 2: Found in UN/LOCODE but no coordinates, try Mapbox with port name
+if (portData.ports.length > 0) {
+    try {
+      const portName = portData.ports[0].name;
+      const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
+      if (!mapboxToken) {
+        throw new Error('Mapbox token not configured');
       }
+      
+      // Using the same pattern as locationService.ts
+      const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(portName)}.json`;
+      const params = new URLSearchParams({
+        access_token: mapboxToken,
+        types: 'poi',
+        limit: '1',
+        country: countryCode.toLowerCase()
+      });
+  
+      const response = await fetch(`${endpoint}?${params}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch location data');
+      }
+      
+      const data = await response.json();
+      
+      if (data.features && data.features.length > 0) {
+        return {
+          latitude: data.features[0].center[1],
+          longitude: data.features[0].center[0]
+        };
+      }
+      throw new Error(`Port ${location} (${portName}) found in UN/LOCODE but coordinates not available`);
+    } catch (error) {
+      console.error('Geocoding error:', error);
+      throw new Error(`Port ${location} found but geocoding failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
 
       throw new Error(`Port ${location} not found in UN/LOCODE database`);
     } else {
