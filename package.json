@@ -3,12 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "scripts": {
+"scripts": {
     "dev": "vite",
-    "build:worker": "esbuild /Users/sahaib/cats/FY/project/api/proxy.ts --bundle --format=esm --platform=browser --outfile=dist/proxy.js",
+    "build:worker": "esbuild api/proxy.ts --bundle --format=esm --platform=browser --outfile=dist/proxy.js",
     "build:web": "vite build",
-    "build": "npm run build:web",
-    "lint": "eslint .",
+    "build": "npm run build:web && npm run build:worker",
     "preview": "vite preview",
     "generate-favicons": "node scripts/generate-favicons.js"
   },
