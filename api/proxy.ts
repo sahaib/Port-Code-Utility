@@ -1,11 +1,12 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Handle preflight requests
+  // Set CORS headers for all responses
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, User-Agent');
+
   if (req.method === 'OPTIONS') {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     return res.status(200).end();
   }
 
@@ -16,26 +17,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
+    console.log('Fetching:', targetUrl);
+    
     const response = await fetch(targetUrl, {
       headers: {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'User-Agent': 'Mozilla/5.0 (compatible; PortsIndex/1.0)',
-      },
+        'User-Agent': 'PortsIndex/1.0',
+        'Cache-Control': 'no-cache'
+      }
     });
 
     if (!response.ok) {
-      throw new Error(`Upstream server responded with status ${response.status}`);
+      throw new Error(`Upstream server responded with ${response.status}`);
     }
 
     const data = await response.text();
     
-    // Set CORS and caching headers
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-    res.setHeader('Cache-Control', 'public, max-age=3600');
+    // Set content type and send response
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    
     return res.status(200).send(data);
+
   } catch (error) {
     console.error('Proxy error:', error);
     return res.status(500).json({ 

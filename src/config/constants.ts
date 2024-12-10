@@ -1,7 +1,7 @@
 // Proxy for local testing and production
 export const PROXY_URL = import.meta.env.DEV 
   ? 'http://localhost:3001/api/proxy?url='
-  : 'https://www.portsindex.com/api/proxy?url=';
+  : '/api/proxy?url=';
 
 export const BASE_URL = 'https://service.unece.org/trade/locode';
 
@@ -52,7 +52,7 @@ export const SUPPORTED_COUNTRIES = {
   'TD': { code: 'TD', name: 'Chad', flag: '🇹🇩', endpoint: '/td.htm' },
   'CL': { code: 'CL', name: 'Chile', flag: '🇱🇱', endpoint: '/cl.htm' },
   'CN': { code: 'CN', name: 'China', flag: '🇨🇳', endpoint: '/cn.htm' },
-  'CX': { code: 'CX', name: 'Christmas Island', flag: '🇨🇽', endpoint: '/cx.htm' },
+  'CX': { code: 'CX', name: 'Christmas Island', flag: '����🇽', endpoint: '/cx.htm' },
   'CC': { code: 'CC', name: 'Cocos (Keeling) Islands', flag: '🇨🇨', endpoint: '/cc.htm' },
   'CO': { code: 'CO', name: 'Colombia', flag: '🇨🇴', endpoint: '/co.htm' },
   'KM': { code: 'KM', name: 'Comoros', flag: '🇰🇲', endpoint: '/km.htm' },
@@ -218,7 +218,7 @@ export const SUPPORTED_COUNTRIES = {
   'LK': { code: 'LK', name: 'Sri Lanka', flag: '🇱🇰', endpoint: '/lk.htm' },
   'SD': { code: 'SD', name: 'Sudan', flag: '🇸🇩', endpoint: '/sd.htm' },
   'SR': { code: 'SR', name: 'Suriname', flag: '🇸🇷', endpoint: '/sr.htm' },
-  'SJ': { code: 'SJ', name: 'Svalbard and Jan Mayen', flag: '🇳🇴', endpoint: '/sj.htm' },
+  'SJ': { code: 'SJ', name: 'Svalbard and Jan Mayen', flag: '🇳����', endpoint: '/sj.htm' },
   'SE': { code: 'SE', name: 'Sweden', flag: '🇸🇪', endpoint: '/se.htm' },
   'CH': { code: 'CH', name: 'Switzerland', flag: '🇨🇭', endpoint: '/ch.htm' },
   'SY': { code: 'SY', name: 'Syrian Arab Republic', flag: '🇸🇾', endpoint: '/sy.htm' },
