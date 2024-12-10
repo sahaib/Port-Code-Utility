@@ -1,15 +1,7 @@
-// Development proxy for local testing
-export const CORS_PROXY = import.meta.env.DEV 
-  ? 'https://cors-anywhere.herokuapp.com/'
-  : ''; // Empty string in production
-
-// Add a development warning
-if (import.meta.env.DEV) {
-  console.warn(
-    '⚠️ Using cors-anywhere proxy for development. ' +
-    'This should not be used in production.'
-  );
-}
+// Proxy for local testing and production
+export const PROXY_URL = import.meta.env.DEV 
+  ? 'http://localhost:3000/api/proxy?url='
+  : '/api/proxy?url=';
 
 export const BASE_URL = 'https://service.unece.org/trade/locode';
 

@@ -10,6 +10,7 @@ interface SearchBarProps {
   onSubmit: (value: string, countryCode: string) => void;
   isLoading: boolean;
   hideSearchIcon?: boolean;
+  isDark?: boolean;
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
@@ -19,7 +20,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   onCountryChange,
   onSubmit,
   isLoading,
-  hideSearchIcon
+  hideSearchIcon,
+  isDark
 }) => {
   const [countrySearch, setCountrySearch] = useState('');
   const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
@@ -107,7 +109,11 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           <button
             onClick={() => onSubmit(value, countryCode)}
             disabled={isLoading}
-            className="claymorphic-icon absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full"
+            className={`absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full
+              ${isDark 
+                ? 'text-gray-300 hover:bg-gray-700 hover:text-white' 
+                : 'text-gray-600 hover:bg-gray-100'
+              } transition-colors`}
           >
             {isLoading ? <Loader2 className="animate-spin" size={20} /> : <Search size={20} />}
           </button>

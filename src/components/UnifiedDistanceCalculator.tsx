@@ -8,11 +8,10 @@ import { fetchPortData } from '../services/portService';
 import { isValidLocode } from '../utils/portUtils';
 import { LocationSearch } from './LocationSearch';
 import { getBounds, getZoomLevel } from '../utils/mapUtils';
-
 import '../styles/globals.css';
+  
 
-
-export const UnifiedDistanceCalculator: React.FC = () => {
+export const UnifiedDistanceCalculator: React.FC<{ isDark: boolean }> = ({ isDark }) => {
   const [origin, setOrigin] = useState<Location | null>(null);
   const [destination, setDestination] = useState<Location | null>(null);
   const [distance, setDistance] = useState<number | null>(null);
@@ -112,6 +111,7 @@ export const UnifiedDistanceCalculator: React.FC = () => {
               onLocationSelect={setOrigin}
               selectedLocation={origin}
               onSearch={handleSearch}
+              isDark={isDark}
             />
           </div>
           
@@ -122,6 +122,7 @@ export const UnifiedDistanceCalculator: React.FC = () => {
               onLocationSelect={setDestination}
               selectedLocation={destination}
               onSearch={handleSearch}
+              isDark={isDark}
             />
           </div>
 
@@ -155,7 +156,11 @@ export const UnifiedDistanceCalculator: React.FC = () => {
             <button
               onClick={handleCalculateDistance}
               disabled={isLoading}
-              className="claymorphic claymorphic-primary calculate-button px-6 py-3 rounded-lg flex items-center gap-2 disabled:opacity-50 font-medium text-lg"
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-lg
+                ${isDark 
+                  ? 'bg-blue-600 hover:bg-blue-700 text-white disabled:bg-gray-700' 
+                  : 'bg-blue-500 hover:bg-blue-600 text-white disabled:bg-gray-200'
+                } transition-colors disabled:cursor-not-allowed`}
             >
               {isLoading ? (
                 <>
@@ -176,7 +181,7 @@ export const UnifiedDistanceCalculator: React.FC = () => {
           <Map
             {...viewport}
             onMove={evt => setViewport(evt.viewState)}
-            mapStyle="mapbox://styles/mapbox/navigation-day-v1"
+            mapStyle={isDark ? "mapbox://styles/mapbox/navigation-night-v1" : "mapbox://styles/mapbox/navigation-day-v1"}
             mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
           >
             <NavigationControl />

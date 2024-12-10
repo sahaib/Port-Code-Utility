@@ -108,58 +108,32 @@ export const Guide: React.FC<{
   onClose?: () => void;
 }> = ({ pageType, forceShow = false, onClose }) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [isVisible, setIsVisible] = useState(() => {
-    if (forceShow) return true;
-    const hasSeenGuide = localStorage.getItem(`hasSeenGuide_${pageType}`);
-    return hasSeenGuide === null;
-  });
+  const [isOpen, setIsOpen] = useState(forceShow);
 
   const steps = useMemo(() => getSteps(pageType), [pageType]);
 
   useEffect(() => {
-    const checkElements = () => {
-      const currentTarget = document.querySelector(steps[currentStep]?.target);
-      if (!currentTarget) {
-        const checkInterval = setInterval(() => {
-          const target = document.querySelector(steps[currentStep]?.target);
-          if (target) {
-            clearInterval(checkInterval);
-            setIsVisible(true);
-          }
-        }, 100);
-        return () => clearInterval(checkInterval);
-      }
-    };
-    checkElements();
-  }, [currentStep, steps, forceShow]);
+    setIsOpen(forceShow);
+  }, [forceShow]);
 
-  useEffect(() => {
-    if (forceShow) {
-      setIsVisible(true);
-      setCurrentStep(0);
-    } else {
-      const hasSeenGuide = localStorage.getItem(`hasSeenGuide_${pageType}`);
-      setIsVisible(hasSeenGuide === null);
-    }
-  }, [forceShow, pageType]);
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(prev => prev + 1);
     } else {
-      setIsVisible(false);
+      setIsOpen(false);
       localStorage.setItem(`hasSeenGuide_${pageType}`, 'true');
+      if (onClose) onClose();
     }
-    if (onClose) onClose();
   };
 
   const handleSkip = () => {
-    setIsVisible(false);
+    setIsOpen(false);
     localStorage.setItem(`hasSeenGuide_${pageType}`, 'true');
     if (onClose) onClose();
   };
 
-  if (!isVisible) return null;
+  if (!isOpen) return null;
 
   const currentTarget = document.querySelector(steps[currentStep]?.target);
   const targetRect = currentTarget?.getBoundingClientRect();

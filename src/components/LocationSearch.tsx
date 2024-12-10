@@ -8,6 +8,7 @@ interface LocationSearchProps {
   onLocationSelect: Dispatch<SetStateAction<Location | null>>;
   selectedLocation: Location | null;
   onSearch: (value: string, countryCode: string, type: LocationType) => Promise<Location[]>;
+  isDark: boolean;
 }
 
 export const LocationSearch: React.FC<LocationSearchProps> = ({
@@ -110,12 +111,13 @@ export const LocationSearch: React.FC<LocationSearchProps> = ({
                       <div
                         key={code}
                         className={`px-4 py-2 flex items-center gap-2 cursor-pointer hover:bg-gray-100
-                          ${countryCode === code ? 'bg-blue-50' : ''}`}
+                          ${countryCode === code ? 'bg-blue-50 selected' : ''}`}
                         onClick={() => {
                           setCountryCode(code);
                           setIsCountryDropdownOpen(false);
                           setCountrySearch('');
                         }}
+                        role="option"
                       >
                         <span className="text-xl">{country.flag}</span>
                         <span>{country.name}</span>

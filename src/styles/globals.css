@@ -1,3 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 transition-colors duration-200;
+  }
+  
+  .dark body {
+    @apply bg-dark-bg text-dark-text;
+  }
+}
+
 .claymorphic-icon {
   background: #ffffff;
   box-shadow: 
@@ -40,39 +54,146 @@
   transform: translateY(1px);
 }
 
-/* Add new navigation button styles */
+/* Navigation and Dark Mode Styles */
 .nav-button {
-  background: linear-gradient(145deg, #f0f2f5, #ffffff);
-  box-shadow: 
-    4px 4px 8px #d1d4d9,
-    -4px -4px 8px #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  transition: all 0.3s ease;
-  font-weight: 500;
+  @apply bg-white text-gray-700 hover:bg-gray-50;
 }
 
-.nav-button:hover {
-  background: linear-gradient(145deg, #ffffff, #f0f2f5);
+.dark .nav-button {
+  @apply bg-gray-800 text-gray-300 hover:bg-gray-700 border-gray-700;
   box-shadow: 
-    6px 6px 12px #d1d4d9,
-    -6px -6px 12px #ffffff;
-  transform: translateY(-1px);
+    4px 4px 8px rgba(0, 0, 0, 0.3),
+    -4px -4px 8px rgba(30, 41, 59, 0.5);
 }
 
 .nav-button.active {
-  background: linear-gradient(145deg, #3b82f6, #2563eb);
-  color: white;
+  @apply bg-blue-600 text-white;
+}
+
+.dark .nav-button.active {
+  @apply bg-blue-600 text-white border-blue-500;
   box-shadow: 
-    4px 4px 8px rgba(37, 99, 235, 0.2),
-    -4px -4px 8px rgba(59, 130, 246, 0.2),
-    inset 1px 1px 1px rgba(255, 255, 255, 0.1);
-  transform: translateY(0);
+    4px 4px 8px rgba(0, 0, 0, 0.3),
+    -4px -4px 8px rgba(37, 99, 235, 0.2);
 }
 
-.nav-button.guide {
-  color: #3b82f6;
+.dark .nav-button:hover {
+  background: linear-gradient(145deg, #1f2937, #374151);
+  box-shadow: 
+    6px 6px 12px rgba(0, 0, 0, 0.3),
+    -6px -6px 12px rgba(30, 41, 59, 0.5);
 }
 
-.nav-button.guide:hover {
-  color: #2563eb;
+.dark .nav-button.guide {
+  @apply text-blue-400 hover:text-blue-300;
+}
+
+/* Dark Mode Component Styles */
+.dark {
+  @apply bg-gray-900 text-gray-100;
+}
+
+.dark .bg-white {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.dark .text-gray-600 {
+  @apply text-gray-400;
+}
+
+/* Form Elements Dark Mode */
+.dark select {
+  @apply bg-gray-800 border-gray-700 text-gray-200;
+}
+
+.dark select:hover {
+  @apply bg-gray-700;
+}
+
+.dark input[type="text"] {
+  @apply bg-gray-800 border-gray-700 text-gray-200 placeholder-gray-500;
+}
+
+.dark input[type="text"]:focus {
+  @apply border-blue-500 ring-blue-500/20;
+}
+
+.dark button[type="submit"],
+.dark .search-button {
+  @apply bg-gray-800 text-gray-300;
+}
+
+.dark button[type="submit"]:hover,
+.dark .search-button:hover {
+  @apply bg-gray-700;
+}
+
+/* Dropdown and Disclaimer Styles */
+.dark .bg-white.rounded-lg {
+  @apply bg-gray-800/50 border border-gray-700;
+}
+
+.dark .country-select .bg-white {
+  @apply bg-gray-800 border-gray-700;
+}
+
+
+
+/* Fix disclaimer component */
+.dark .bg-gray-50 {
+  @apply bg-gray-800/50;
+}
+
+.dark .text-gray-800 {
+  @apply text-gray-100;
+}
+
+.dark .text-gray-600 {
+  @apply text-gray-300;
+}
+
+.dark .border-gray-200 {
+  @apply border-gray-700;
+}
+
+/* Update country dropdown styles */
+.dark .dropdown-content div {
+  @apply text-gray-200;
+}
+
+.dark .dropdown-content div:hover {
+  @apply bg-gray-700;
+}
+
+.dark .dropdown-content div span.text-gray-500 {
+  @apply text-gray-400;
+}
+
+.dark .dropdown-content div.bg-blue-50 {
+  @apply bg-blue-900/30;
+}
+
+/* Fix country dropdown styles */
+.dark .absolute.bg-white {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.dark .absolute .border-gray-200 {
+  @apply border-gray-700;
+}
+
+.dark .absolute .hover\:bg-gray-100:hover {
+  @apply bg-gray-700;
+}
+
+.dark .absolute .bg-blue-50 {
+  @apply bg-blue-900/30;
+}
+
+.dark .absolute span {
+  @apply text-gray-200;
+}
+
+.dark .absolute .text-gray-500 {
+  @apply text-gray-400;
 } 

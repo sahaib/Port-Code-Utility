@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
-import { Anchor, Ship, AlertCircle, MapPin, RefreshCw } from 'lucide-react';
+import { Anchor, Ship, AlertCircle, MapPin, RefreshCw, Moon, Sun } from 'lucide-react';
 import { SearchBar } from './components/SearchBar';
 import { PortCard } from './components/PortCard';
 import { DistanceCalculator } from './components/DistanceCalculator';
@@ -10,6 +10,7 @@ import { PortData } from './types/port';
 import { isValidLocode } from './utils/portUtils';
 import { Disclaimer } from './components/Disclaimer';
 import { Guide } from './components/Guide';
+import { useDarkMode } from './hooks/useDarkMode';
 
 function App() {
   const [searchValue, setSearchValue] = useState('');
@@ -18,6 +19,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showGuide, setShowGuide] = useState(false);
+  const [isDark, setIsDark] = useDarkMode();
 
   const handleSearch = async () => {
     if (!countryCode) {
@@ -72,7 +74,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-gray-50">
+      <div className={`min-h-screen ${isDark ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
         <div className="container mx-auto px-4 py-8">
           <div className="flex justify-center mb-8">
             <NavLink to="/" className="text-4xl">⚓</NavLink>
@@ -113,12 +115,19 @@ function App() {
               <RefreshCw size={20} />
               <span>Start Guide</span>
             </button>
+            <button
+              onClick={() => setIsDark(!isDark)}
+              className="nav-button flex items-center gap-2 px-5 py-2.5 rounded-lg transition-all"
+            >
+              {isDark ? <Sun size={20} /> : <Moon size={20} />}
+              <span>{isDark ? 'Light Mode' : 'Dark Mode'}</span>
+            </button>
           </nav>
 
           <Routes>
             <Route path="/" element={
               <>
-                <Guide pageType="lookup" forceShow={showGuide} />
+                <Guide pageType="lookup" forceShow={showGuide && !localStorage.getItem('hasSeenGuide_lookup')} />
                 <h1 className="text-3xl font-bold text-center mb-2">Global Port Lookup</h1>
                 <p className="text-gray-600 text-center mb-8">
                   Enter a UN/LOCODE or port name to get detailed information about ports worldwide
@@ -152,12 +161,12 @@ function App() {
             
             <Route path="/distance" element={
               <>
-                <Guide pageType="distance" forceShow={showGuide} />
+                <Guide pageType="distance" forceShow={showGuide && !localStorage.getItem('hasSeenGuide_distance')} />
                 <h1 className="text-3xl font-bold text-center mb-2">Port Distance Calculator</h1>
                 <p className="text-gray-600 text-center mb-8">
                   Calculate the nautical distance between any two ports
                 </p>
-                <DistanceCalculator onSearch={handlePortSearch} />
+                <DistanceCalculator onSearch={handlePortSearch} isDark={isDark} />
               </>
             } />
             
@@ -165,14 +174,14 @@ function App() {
               <>
                 <Guide 
                   pageType="unified" 
-                  forceShow={showGuide} 
+                  forceShow={showGuide && !localStorage.getItem('hasSeenGuide_unified')}
                   onClose={() => setShowGuide(false)}
                 />
                 <h1 className="text-3xl font-bold text-center mb-2">Unified Distance Calculator</h1>
                 <p className="text-gray-600 text-center mb-8">
                   Calculate distances between ports and postal locations
                 </p>
-                <UnifiedDistanceCalculator />
+                <UnifiedDistanceCalculator isDark={isDark} />
               </>
             } />
           </Routes>

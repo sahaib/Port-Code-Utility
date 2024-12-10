@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { SearchBar } from './SearchBar';
-import { Map, NavigationControl, Marker } from 'react-map-gl';
-import { calculateDistance, parseCoordinates } from '../utils/distanceUtils';
+import { Map, NavigationControl, Marker, Layer, Source } from 'react-map-gl';
+import { parseCoordinates } from '../utils/distanceUtils';
 import { Ship, Loader2 } from 'lucide-react';
 import { PortData } from '../types/port';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { MapPin } from 'lucide-react';
+import mapboxgl from 'mapbox-gl';
+
 
 interface DistanceCalculatorProps {
   onSearch: (value: string, countryCode: string) => Promise<PortData[]>;
+  isDark: boolean;
 }
 
-export const DistanceCalculator: React.FC<DistanceCalculatorProps> = ({ onSearch }) => {
+export const DistanceCalculator: React.FC<DistanceCalculatorProps> = ({ onSearch, isDark }) => {
   const [origin, setOrigin] = useState<PortData | null>(null);
   const [destination, setDestination] = useState<PortData | null>(null);
   const [distance, setDistance] = useState<number | null>(null);
@@ -22,6 +26,17 @@ export const DistanceCalculator: React.FC<DistanceCalculatorProps> = ({ onSearch
   const [originCountry, setOriginCountry] = useState('');
   const [destSearch, setDestSearch] = useState('');
   const [destCountry, setDestCountry] = useState('');
+
+  const [viewport, setViewport] = useState({
+    longitude: 0,
+    latitude: 20,
+    zoom: 1.5
+  });
+
+  const [routeGeometry, setRouteGeometry] = useState<any>(null);
+
+  // Add ref for Map component
+  const mapRef = useRef<any>(null);
 
   const handleCalculateDistance = async () => {
     if (!originSearch || !originCountry || !destSearch || !destCountry) {
@@ -57,19 +72,40 @@ export const DistanceCalculator: React.FC<DistanceCalculatorProps> = ({ onSearch
       setOrigin(originPort);
       setDestination(destPort);
   
-      const dist = calculateDistance(
-        parseCoordinates(originPort.coordinates),
-        parseCoordinates(destPort.coordinates)
+      const response = await fetch(
+        `https://api.mapbox.com/directions/v5/mapbox/driving/${parseCoordinates(originPort.coordinates).longitude},${parseCoordinates(originPort.coordinates).latitude};${parseCoordinates(destPort.coordinates).longitude},${parseCoordinates(destPort.coordinates).latitude}?geometries=geojson&access_token=${import.meta.env.VITE_MAPBOX_TOKEN}`
       );
+      const data = await response.json();
       
-      setDistance(dist);
+      if (data.routes && data.routes[0]) {
+        const route = data.routes[0];
+        setRouteGeometry({
+          type: 'Feature',
+          properties: {},
+          geometry: route.geometry
+        });
+        setDistance(route.distance / 1852);
+        
+        // Create bounds
+        const bounds = new mapboxgl.LngLatBounds();
+        route.geometry.coordinates.forEach((coord: [number, number]) => {
+          bounds.extend(coord);
+        });
+
+        // Use map ref to fit bounds
+        mapRef.current?.fitBounds(bounds, {
+          padding: 50,
+          duration: 1000
+        });
+      }
     } catch (err) {
-      console.error('Distance calculation error:', err);
-      setError(err instanceof Error ? err.message : 'Failed to calculate distance');
+      console.error('Route calculation error:', err);
+      setError(err instanceof Error ? err.message : 'Failed to calculate route');
     } finally {
       setIsLoading(false);
     }
   };
+
 
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6">
@@ -140,36 +176,46 @@ export const DistanceCalculator: React.FC<DistanceCalculatorProps> = ({ onSearch
         </div>
       )}
 
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <Map
-          initialViewState={{
-            longitude: 0,
-            latitude: 0,
-            zoom: 1
-          }}
-          style={{ width: '100%', height: 400 }}
-          mapStyle="mapbox://styles/mapbox/navigation-night-v1"
-          mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
-        >
-          <NavigationControl />
-          {origin && (
-            <Marker
-              longitude={parseCoordinates(origin.coordinates).longitude}
-              latitude={parseCoordinates(origin.coordinates).latitude}
-            >
-              <Ship className="text-blue-500" size={24} />
-            </Marker>
-          )}
-          {destination && (
-            <Marker
-              longitude={parseCoordinates(destination.coordinates).longitude}
-              latitude={parseCoordinates(destination.coordinates).latitude}
-            >
-              <Ship className="text-red-500" size={24} />
-            </Marker>
-          )}
-        </Map>
-      </div>
+<div className="bg-white p-4 rounded-xl shadow-lg h-[600px]">
+          <Map
+            ref={mapRef}
+            {...viewport}
+            onMove={evt => setViewport(evt.viewState)}
+            mapStyle={isDark ? "mapbox://styles/mapbox/navigation-night-v1" : "mapbox://styles/mapbox/navigation-day-v1"}
+            mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
+          >
+            <NavigationControl />
+            {origin && (
+              <Marker
+                latitude={parseCoordinates(origin.coordinates).latitude}
+                longitude={parseCoordinates(origin.coordinates).longitude}
+              >
+                {origin.type === 'port' ? <Ship className="text-blue-500" /> : <MapPin className="text-red-500" />}
+              </Marker>
+            )}
+            {destination && (
+              <Marker
+                latitude={parseCoordinates(destination.coordinates).latitude}
+                longitude={parseCoordinates(destination.coordinates).longitude}
+              >
+                {destination.type === 'port' ? <Ship className="text-blue-500" /> : <MapPin className="text-red-500" />}
+              </Marker>
+            )}
+            {routeGeometry && (
+              <Source type="geojson" data={routeGeometry}>
+                <Layer
+                  id="route"
+                  type="line"
+                  paint={{
+                    'line-color': '#0066FF',
+                    'line-width': 3,
+                    'line-opacity': 0.8
+                  }}
+                />
+              </Source>
+            )}
+          </Map>
+        </div>
     </div>
   );
 }; 

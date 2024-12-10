@@ -9,6 +9,7 @@ export interface PortData {
   iata: string;
   coordinates: string;
   remarks: string;
+  type: 'port' | 'postal';
 }
 
 export interface PortResponse {

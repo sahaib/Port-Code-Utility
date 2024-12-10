@@ -1,4 +1,4 @@
-import { BASE_URL, CORS_PROXY } from "../config/constants";
+import { BASE_URL, PROXY_URL } from "../config/constants";
 import { parseHtmlTable } from "../utils/htmlParser";
 import { PortResponse } from '../types/port';
 import { SearchOptions } from '../types/search';
@@ -14,7 +14,7 @@ export const fetchPortData = async (searchOptions: SearchOptions): Promise<PortR
     throw new Error('Country code is required');
   }
 
-  const url = `${CORS_PROXY}${BASE_URL}/${countryCode.toLowerCase()}.htm`;
+  const url = `${PROXY_URL}${encodeURIComponent(`${BASE_URL}/${countryCode.toLowerCase()}.htm`)}`;
 
   try {
     const controller = new AbortController();
