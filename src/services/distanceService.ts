@@ -94,9 +94,16 @@ async function getCoordinates(
             throw new Error('Mapbox token not configured');
           }
           
-          const response = await fetch(
-            `https://api.mapbox.com/geocoding/v5/mapbox.places/${portName} port ${countryCode}.json?access_token=${mapboxToken}&types=poi&limit=1`
-          );
+          const params = new URLSearchParams({
+            access_token: mapboxToken,
+            types: 'poi',
+            limit: '1'
+          });
+
+          const searchQuery = encodeURIComponent(`${portName} port ${countryCode}`);
+          const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${searchQuery}.json?${params}`;
+          
+          const response = await fetch(url);
           const data = await response.json();
           
           if (data.features && data.features.length > 0) {
