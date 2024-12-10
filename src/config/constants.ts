@@ -1,4 +1,4 @@
-export const PROXY_URL = 'https://api.allorigins.win/raw?url=';
+export const PROXY_URL = 'https://corsanywhere.herokuapp.com/';
 
 export const BASE_URL = 'https://service.unece.org/trade/locode';
 
@@ -33,7 +33,7 @@ export const SUPPORTED_COUNTRIES = {
   'BQ': { code: 'BQ', name: 'Bonaire, Sint Eustatius and Saba', flag: '🇧🇶', endpoint: '/bq.htm' },
   'BA': { code: 'BA', name: 'Bosnia and Herzegovina', flag: '🇧🇦', endpoint: '/ba.htm' },
   'BW': { code: 'BW', name: 'Botswana', flag: '🇧🇼', endpoint: '/bw.htm' },
-  'BV': { code: 'BV', name: 'Bouvet Island', flag: '🇧��', endpoint: '/bv.htm' },
+  'BV': { code: 'BV', name: 'Bouvet Island', flag: '🇧🇻', endpoint: '/bv.htm' },
   'BR': { code: 'BR', name: 'Brazil', flag: '🇧🇷', endpoint: '/br.htm' },
   'IO': { code: 'IO', name: 'British Indian Ocean Territory', flag: '🇮🇴', endpoint: '/io.htm' },
   'BN': { code: 'BN', name: 'Brunei Darussalam', flag: '🇧🇳', endpoint: '/bn.htm' },
@@ -49,7 +49,7 @@ export const SUPPORTED_COUNTRIES = {
   'TD': { code: 'TD', name: 'Chad', flag: '🇹🇩', endpoint: '/td.htm' },
   'CL': { code: 'CL', name: 'Chile', flag: '🇨🇱', endpoint: '/cl.htm' },
   'CN': { code: 'CN', name: 'China', flag: '🇨🇳', endpoint: '/cn.htm' },
-  'CX': { code: 'CX', name: 'Christmas Island', flag: '����🇽', endpoint: '/cx.htm' },
+  'CX': { code: 'CX', name: 'Christmas Island', flag: '🇨🇽', endpoint: '/cx.htm' },
   'CC': { code: 'CC', name: 'Cocos (Keeling) Islands', flag: '🇨🇨', endpoint: '/cc.htm' },
   'CO': { code: 'CO', name: 'Colombia', flag: '🇨🇴', endpoint: '/co.htm' },
   'KM': { code: 'KM', name: 'Comoros', flag: '🇰🇲', endpoint: '/km.htm' },
@@ -99,7 +99,7 @@ export const SUPPORTED_COUNTRIES = {
   'GW': { code: 'GW', name: 'Guinea-Bissau', flag: '🇬🇼', endpoint: '/gw.htm' },
   'GY': { code: 'GY', name: 'Guyana', flag: '🇬🇾', endpoint: '/gy.htm' },
   'HT': { code: 'HT', name: 'Haiti', flag: '🇭🇹', endpoint: '/ht.htm' },
-  'HM': { code: 'HM', name: 'Heard Island and McDonald Islands', flag: '🇭🇲', endpoint: '/hm.htm' },
+  'HM': { code: 'HM', name: 'Heard Island and McDonald Islands', flag: '🇭��', endpoint: '/hm.htm' },
   'VA': { code: 'VA', name: 'Holy See (Vatican City State)', flag: '🇻🇦', endpoint: '/va.htm' },
   'HN': { code: 'HN', name: 'Honduras', flag: '🇭🇳', endpoint: '/hn.htm' },
   'HK': { code: 'HK', name: 'Hong Kong', flag: '🇭🇰', endpoint: '/hk.htm' },
