@@ -14,7 +14,6 @@
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" }
   ],
-  "regions": ["all"],
   "functions": {
     "api/**": {
       "memory": 1024,
