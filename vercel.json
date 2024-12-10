@@ -11,26 +11,29 @@
     {
       "src": "^/assets/.*\\.(js|css|svg|png|jpg|jpeg|gif|ico)$",
       "headers": {
-        "cache-control": "public, max-age=31536000, immutable"
+        "cache-control": "public, max-age=31536000, immutable",
+        "content-type": "application/javascript; charset=utf-8"
       }
+    },
+    {
+      "src": "^/assets/.*\\.js$",
+      "headers": {
+        "content-type": "application/javascript; charset=utf-8"
+      }
+    },
+    {
+      "src": "/api/proxy/(.*)",
+      "dest": "/api/proxy/$1"
     },
     {
       "handle": "filesystem"
     },
     {
-      "src": ".*",
-      "dest": "/index.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        }
-      ]
+      "src": "/(.*)",
+      "dest": "/index.html",
+      "headers": {
+        "cache-control": "public, max-age=0, must-revalidate"
+      }
     }
   ]
 }

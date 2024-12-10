@@ -1,13 +1,12 @@
 /// <reference lib="webworker" />
 declare let self: ServiceWorkerGlobalScope;
 
-import { precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { CacheFirst, NetworkFirst } from 'workbox-strategies';
 import { ExpirationPlugin } from 'workbox-expiration';
 
 // Precache static assets
-precacheAndRoute(self.__WB_MANIFEST);
+// precacheAndRoute(self.__WB_MANIFEST);
 
 // Cache UN/LOCODE API responses
 registerRoute(
