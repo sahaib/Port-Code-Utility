@@ -9,31 +9,28 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
+      "src": "^/assets/.*\\.(js|css|svg|png|jpg|jpeg|gif|ico)$",
       "headers": {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-        "Access-Control-Allow-Headers": "X-Requested-With, Content-Type, Accept"
-      },
-      "dest": "/api/$1"
-    },
-    {
-      "src": "^/assets/.*\\.js$",
-      "headers": {
-        "Content-Type": "application/javascript; charset=utf-8"
+        "cache-control": "public, max-age=31536000, immutable"
       }
     },
     {
-      "src": "^/assets/.*\\.mjs$",
-      "headers": {
-        "Content-Type": "application/javascript; charset=utf-8"
-      }
+      "handle": "filesystem"
     },
     {
-      "src": "/(.*)",
+      "src": ".*",
       "dest": "/index.html"
     }
   ],
-  "devCommand": "npm run dev",
-  "buildCommand": "npm run build"
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    }
+  ]
 }

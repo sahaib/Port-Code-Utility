@@ -45,5 +45,10 @@ export default defineConfig({
     modulePreload: {
       polyfill: true
     }
+  },
+  resolve: {
+    alias: {
+      '@': '/src'
+    }
   }
 });
