@@ -9,20 +9,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000);
-
     const response = await fetch(targetUrl, {
       headers: {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         'User-Agent': 'Mozilla/5.0 (compatible; PortsIndex/1.0)',
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache'
-      },
-      signal: controller.signal as any
+        'Origin': 'https://portsindex.com'
+      }
     });
-    
-    clearTimeout(timeoutId);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -33,7 +26,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, User-Agent');
-    res.setHeader('Cache-Control', 'public, max-age=3600');
     
     return res.status(200).send(data);
   } catch (error) {

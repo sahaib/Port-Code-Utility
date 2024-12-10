@@ -1,7 +1,7 @@
 // Proxy URL should always be relative when using Vercel's API routes
 export const PROXY_URL = import.meta.env.DEV 
-  ? 'http://localhost:30001/api/proxy?url='
-  : '/api/proxy?url=';
+  ? 'http://localhost:3000/api/proxy?url='
+  : 'https://portsindex.com/api/proxy?url=';
 
 export const BASE_URL = 'https://service.unece.org/trade/locode';
 
@@ -158,7 +158,7 @@ export const SUPPORTED_COUNTRIES = {
   'MS': { code: 'MS', name: 'Montserrat', flag: '🇲🇸', endpoint: '/ms.htm' },
   'MA': { code: 'MA', name: 'Morocco', flag: '🇲🇦', endpoint: '/ma.htm' },
   'MZ': { code: 'MZ', name: 'Mozambique', flag: '🇲🇿', endpoint: '/mz.htm' },
-  'MM': { code: 'MM', name: 'Myanmar', flag: '🇲🇲', endpoint: '/mm.htm' },
+  'MM': { code: 'MM', name: 'Myanmar', flag: '🇲����', endpoint: '/mm.htm' },
   'NA': { code: 'NA', name: 'Namibia', flag: '🇳🇦', endpoint: '/na.htm' },
   'NR': { code: 'NR', name: 'Nauru', flag: '🇳🇷', endpoint: '/nr.htm' },
   'NP': { code: 'NP', name: 'Nepal', flag: '🇳🇵', endpoint: '/np.htm' },
