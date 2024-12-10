@@ -1,12 +1,12 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import fetch from 'node-fetch';
 
-// Constants
+// Allowed origins for CORS
 const ALLOWED_ORIGINS = [
-  'https://port-code-utility.vercel.app/',
+  'https://port-code-utility.vercel.app',
   'https://portsindex.com',
   'https://www.portsindex.com',
-  'http://localhost:3001'
+  'http://localhost:3001',
 ];
 
 /**
@@ -21,7 +21,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (origin && ALLOWED_ORIGINS.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.setHeader('Access-Control-Max-Age', '86400'); // Cache preflight for 24 hours
   } else {
     return res.status(403).json({ error: 'Forbidden origin' });
@@ -29,7 +29,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // Handle preflight requests
   if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+    return res.status(204).end(); // Respond with no content for preflight
   }
 
   // Validate request method
@@ -54,7 +54,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Handle non-OK responses
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
     // Forward the response
