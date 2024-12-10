@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Allow: /sitemap.xml
+
+User-agent: Mediapartners-Google
+Allow: /
+
+Sitemap: https://portsindex.com/sitemap.xml 

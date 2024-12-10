@@ -13,5 +13,15 @@ export default defineConfig({
     hmr: {
       clientPort: 3001
     }
+  },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    // Ensure index.html is processed
+    rollupOptions: {
+      input: {
+        main: './index.html'
+      }
+    }
   }
 });
