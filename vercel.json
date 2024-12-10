@@ -11,14 +11,19 @@
     {
       "src": "^/assets/.*\\.(js|css|svg|png|jpg|jpeg|gif|ico)$",
       "headers": {
-        "cache-control": "public, max-age=31536000, immutable",
-        "content-type": "application/javascript; charset=utf-8"
+        "cache-control": "public, max-age=31536000, immutable"
       }
     },
     {
       "src": "^/assets/.*\\.js$",
       "headers": {
         "content-type": "application/javascript; charset=utf-8"
+      }
+    },
+    {
+      "src": "^/assets/.*\\.css$",
+      "headers": {
+        "content-type": "text/css; charset=utf-8"
       }
     },
     {
