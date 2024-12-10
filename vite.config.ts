@@ -11,7 +11,7 @@ export default defineConfig({
     port: 3001,
     host: true,
     hmr: {
-      clientPort: 3001
+      clientPort: 3000
     }
   },
   build: {
