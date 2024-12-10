@@ -1,4 +1,5 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
+import { REQUEST_HEADERS } from '../src/config/constants';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Set CORS headers for all responses
@@ -20,12 +21,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     console.log('Fetching:', targetUrl);
     
     const response = await fetch(targetUrl, {
-      headers: {
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'User-Agent': 'Mozilla/5.0 (compatible; PortsIndex/1.0)',
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache'
-      }
+      headers: REQUEST_HEADERS
     });
 
     if (!response.ok) {
