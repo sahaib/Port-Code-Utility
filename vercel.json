@@ -18,6 +18,18 @@
       "dest": "/api/$1"
     },
     {
+      "src": "^/assets/.*\\.js$",
+      "headers": {
+        "Content-Type": "application/javascript; charset=utf-8"
+      }
+    },
+    {
+      "src": "^/assets/.*\\.mjs$",
+      "headers": {
+        "Content-Type": "application/javascript; charset=utf-8"
+      }
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }

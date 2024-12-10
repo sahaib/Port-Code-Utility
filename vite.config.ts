@@ -41,6 +41,9 @@ export default defineConfig({
       input: {
         main: './index.html'
       }
+    },
+    modulePreload: {
+      polyfill: true
     }
   }
 });
