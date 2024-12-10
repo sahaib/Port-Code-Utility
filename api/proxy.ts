@@ -13,7 +13,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       headers: {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         'User-Agent': 'Mozilla/5.0 (compatible; PortsIndex/1.0)',
-        'Origin': 'https://portsindex.com'
+        'Origin': null as any,
+        'Referer': 'https://service.unece.org/'
       }
     });
     
@@ -23,9 +24,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     
     const data = await response.text();
     
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, User-Agent');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, User-Agent, Origin');
     
     return res.status(200).send(data);
   } catch (error) {
