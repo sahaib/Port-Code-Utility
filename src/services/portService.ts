@@ -1,4 +1,4 @@
-import { BASE_URL, PROXY_URL } from "../config/constants";
+import { BASE_URL, PROXY_URL, REQUEST_HEADERS } from "../config/constants";
 import { parseHtmlTable } from "../utils/htmlParser";
 import { PortData, PortResponse } from '../types/port';
 import { SearchOptions } from '../types/search';
@@ -19,20 +19,20 @@ export const fetchPortData = async (searchOptions: SearchOptions): Promise<PortR
 
   const countryKey = countryCode.toLowerCase();
   const cachedData = countryDataCache[countryKey];
-  let ports: PortData[];
-  
-  if (cachedData && (Date.now() - cachedData.timestamp) < CACHE_DURATION) {
-    ports = cachedData.parsedPorts;
-  } else {
-    const url = `${PROXY_URL}${encodeURIComponent(`${BASE_URL}/${countryCode.toLowerCase()}.htm`)}`;
-    console.log('Requesting URL:', url); // Debug log
+  let ports: PortData[] = [];  // Initialize ports array
 
-    try {
-      const response = await fetch(url);
+  try {
+    if (cachedData && (Date.now() - cachedData.timestamp) < CACHE_DURATION) {
+      ports = cachedData.parsedPorts;
+    } else {
+      const url = `${PROXY_URL}${encodeURIComponent(`${BASE_URL}/${countryCode.toLowerCase()}.htm`)}`;
+      console.log('Requesting URL:', url);
+
+      const response = await fetch(url, {
+        headers: REQUEST_HEADERS
+      });
       
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Server response:', errorText);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
@@ -45,30 +45,32 @@ export const fetchPortData = async (searchOptions: SearchOptions): Promise<PortR
         parsedPorts: ports,
         timestamp: Date.now()
       };
-    } catch (error) {
-      console.error('Fetch error:', error);
-      throw error;
     }
-  }
 
-  if (type === 'locode') {
-    const exactMatch = ports.find(port => port.locode === value.toUpperCase());
+    // Search logic
+    if (type === 'locode') {
+      const exactMatch = ports.find(port => port.locode === value.toUpperCase());
+      return {
+        ports: exactMatch ? [exactMatch] : [],
+        country: countryCode.toUpperCase()
+      };
+    }
+
+    const searchTerm = value.toLowerCase();
+    const filteredPorts = ports.filter(port => 
+      port.name.toLowerCase().includes(searchTerm) ||
+      port.nameWoDiacritics.toLowerCase().includes(searchTerm)
+    ).slice(0, 10);
+
     return {
-      ports: exactMatch ? [exactMatch] : [],
+      ports: filteredPorts,
       country: countryCode.toUpperCase()
     };
+
+  } catch (error) {
+    console.error('Fetch error:', error);
+    throw error;
   }
-
-  const searchTerm = value.toLowerCase();
-  const filteredPorts = ports.filter(port => 
-    port.name.toLowerCase().includes(searchTerm) ||
-    port.nameWoDiacritics.toLowerCase().includes(searchTerm)
-  ).slice(0, 10);
-
-  return {
-    ports: filteredPorts,
-    country: countryCode.toUpperCase()
-  };
 };
 
 export const clearCountryCache = () => {

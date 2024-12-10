@@ -76,28 +76,28 @@ function App() {
   return (
     <BrowserRouter>
       <div className={`min-h-screen ${isDark ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex justify-center mb-8">
-            <NavLink to="/" className="text-4xl">⚓</NavLink>
+        <div className="container mx-auto px-4 py-4 sm:py-8">
+          <div className="flex justify-center mb-4 sm:mb-8">
+            <NavLink to="/" className="text-3xl sm:text-4xl">⚓</NavLink>
           </div>
           
-          <nav className="flex justify-center gap-4 mb-8">
+          <nav className="flex justify-center gap-2 sm:gap-4 mb-6 sm:mb-8">
             <NavLink 
               to="/" 
               className={({ isActive }) => 
-                `nav-button flex items-center gap-2 px-5 py-2.5 rounded-lg transition-all ${isActive ? 'active' : ''}`
+                `nav-button flex items-center gap-1 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg transition-all text-sm sm:text-base ${isActive ? 'active' : ''}`
               }
             >
-              <Anchor size={20} />
+              <Anchor size={16} className="sm:w-5 sm:h-5" />
               <span>Port Lookup</span>
             </NavLink>
             <NavLink 
               to="/distance" 
               className={({ isActive }) => 
-                `nav-button flex items-center gap-2 px-5 py-2.5 rounded-lg transition-all ${isActive ? 'active' : ''}`
+                `nav-button flex items-center gap-1 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg transition-all text-sm sm:text-base ${isActive ? 'active' : ''}`
               }
             >
-              <Ship size={20} />
+              <Ship size={16} className="sm:w-5 sm:h-5" />
               <span>Port Distance</span>
             </NavLink>
             <NavLink 

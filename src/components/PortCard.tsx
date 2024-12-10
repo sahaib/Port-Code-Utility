@@ -1,5 +1,5 @@
 import React from 'react';
-import { Anchor, MapPin, Calendar, Activity, Info, Building, Plane, Ship, Train, Truck, Package, Globe } from 'lucide-react';
+import { Anchor, MapPin, Calendar, Info, Plane, Ship, Train, Truck, Package, Globe } from 'lucide-react';
 import { STATUS_CODES, FUNCTION_DESCRIPTIONS } from '../config/locodeConstants';
 import { PortData } from '../types/port';
 import { getCountryInfo } from '../utils/countryUtils';
@@ -88,20 +88,20 @@ export const PortCard: React.FC<PortCardProps> = ({ port }) => {
   const { name: countryName, flag } = getCountryInfo(countryCode);
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300">
-      <div className="flex items-start justify-between">
+    <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 transform hover:scale-105 transition-all duration-300">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-0">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-2xl">{flag}</span>
-            <span className="text-sm text-gray-600">{countryName}</span>
+            <span className="text-xl sm:text-2xl">{flag}</span>
+            <span className="text-xs sm:text-sm text-gray-600">{countryName}</span>
           </div>
-          <h3 className="text-2xl font-bold text-gray-800">{port.name}</h3>
-          <p className="text-lg font-semibold text-blue-600 mt-1">{port.locode}</p>
+          <h3 className="text-lg sm:text-2xl font-bold text-gray-800">{port.name}</h3>
+          <p className="text-base sm:text-lg font-semibold text-blue-600 mt-1">{port.locode}</p>
           {port.subdivision && (
-            <p className="text-sm text-gray-600">Subdivision: {port.subdivision}</p>
+            <p className="text-xs sm:text-sm text-gray-600">Subdivision: {port.subdivision}</p>
           )}
         </div>
-        <Anchor className="text-blue-500" size={24} />
+        <Anchor className="text-blue-500 hidden sm:block" size={24} />
       </div>
       
       <div className="mt-4 space-y-4">

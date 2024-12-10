@@ -1,15 +1,20 @@
-const fetch = require('node-fetch');
+import { VercelRequest, VercelResponse } from '@vercel/node';
+import fetch from 'node-fetch';
 
-module.exports = async function handler(req, res) {
-  const targetUrl = req.query.url;
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  const targetUrl = req.query.url as string;
   
   if (!targetUrl) {
     return res.status(400).json({ error: 'URL parameter is required' });
   }
 
   try {
-    console.log('Fetching:', targetUrl); // Debug log
-    const response = await fetch(targetUrl);
+    const response = await fetch(targetUrl, {
+      headers: {
+        'Accept': 'text/html,application/xhtml+xml',
+        'User-Agent': 'Mozilla/5.0 (compatible)'
+      }
+    });
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -17,7 +22,9 @@ module.exports = async function handler(req, res) {
     
     const data = await response.text();
     
+    // Set CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     
     return res.status(200).send(data);

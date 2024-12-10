@@ -1,4 +1,4 @@
-export const PROXY_URL = 'https://corsanywhere.herokuapp.com/';
+export const PROXY_URL = '/api/proxy?url=';
 
 export const BASE_URL = 'https://service.unece.org/trade/locode';
 
