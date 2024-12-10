@@ -1,4 +1,6 @@
-export const PROXY_URL = '/api/proxy?url=';
+export const PROXY_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://portsindex.com/api/proxy?url=' 
+  : '/api/proxy?url=';
 
 export const BASE_URL = 'https://service.unece.org/trade/locode';
 
