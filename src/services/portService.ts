@@ -37,9 +37,7 @@ export const fetchPortData = async (searchOptions: SearchOptions): Promise<PortR
         headers: {
           'Accept': 'text/html',
           'User-Agent': 'Mozilla/5.0',
-          'Origin': window.location.origin
-        },
-        signal: controller.signal
+        }
       });
       
       clearTimeout(timeoutId);
