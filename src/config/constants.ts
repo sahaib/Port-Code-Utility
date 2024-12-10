@@ -1,13 +1,10 @@
-
-export const PROXY_URL = import.meta.env.DEV
-  ? 'http://localhost:3001/api/proxy?url='
-  : 'https://portsindex-proxy.sahaibsingh001-ss.workers.dev/?url=';
+export const PROXY_URL = '/api/proxy';
 
 export const CLIENT_HEADERS = {
   'Accept': 'text/html,application/xhtml+xml',
 };
 
-export const BASE_URL = 'https://service.unece.org/trade/locode';
+export const BASE_URL = '';
 
 export const SUPPORTED_COUNTRIES = {
   'AF': { code: 'AF', name: 'Afghanistan', flag: '🇦🇫', endpoint: '/af.htm' },
@@ -106,7 +103,7 @@ export const SUPPORTED_COUNTRIES = {
   'GW': { code: 'GW', name: 'Guinea-Bissau', flag: '🇬🇼', endpoint: '/gw.htm' },
   'GY': { code: 'GY', name: 'Guyana', flag: '🇬🇾', endpoint: '/gy.htm' },
   'HT': { code: 'HT', name: 'Haiti', flag: '🇭🇹', endpoint: '/ht.htm' },
-  'HM': { code: 'HM', name: 'Heard Island and McDonald Islands', flag: '🇭��', endpoint: '/hm.htm' },
+  'HM': { code: 'HM', name: 'Heard Island and McDonald Islands', flag: '🇭🇲', endpoint: '/hm.htm' },
   'VA': { code: 'VA', name: 'Holy See (Vatican City State)', flag: '🇻🇦', endpoint: '/va.htm' },
   'HN': { code: 'HN', name: 'Honduras', flag: '🇭🇳', endpoint: '/hn.htm' },
   'HK': { code: 'HK', name: 'Hong Kong', flag: '🇭🇰', endpoint: '/hk.htm' },

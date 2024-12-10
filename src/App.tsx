@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
-import { Anchor, Ship, AlertCircle, MapPin, RefreshCw, Moon, Sun } from 'lucide-react';
+import { Anchor, Ship, AlertCircle, MapPin, RefreshCw, Moon, Sun, FileSpreadsheet } from 'lucide-react';
 import { SearchBar } from './components/SearchBar';
 import { PortCard } from './components/PortCard';
 import { DistanceCalculator } from './components/DistanceCalculator';
@@ -12,6 +12,7 @@ import { Disclaimer } from './components/Disclaimer';
 import { Guide } from './components/Guide';
 import { useDarkMode } from './hooks/useDarkMode';
 import { LoadingState } from './components/LoadingState';
+import { BulkDistanceCalculator } from './components/BulkDistanceCalculator';
 
 function App() {
   const [searchValue, setSearchValue] = useState('');
@@ -70,6 +71,7 @@ function App() {
     localStorage.removeItem(`hasSeenGuide_lookup`);
     localStorage.removeItem(`hasSeenGuide_distance`);
     localStorage.removeItem(`hasSeenGuide_unified`);
+    localStorage.removeItem(`hasSeenGuide_bulk`);
     setShowGuide(true);
   };
 
@@ -108,6 +110,15 @@ function App() {
             >
               <MapPin size={20} />
               <span>Unified Distance</span>
+            </NavLink>
+            <NavLink 
+              to="/bulk-distance" 
+              className={({ isActive }) => 
+                `nav-button flex items-center gap-2 px-5 py-2.5 rounded-lg transition-all ${isActive ? 'active' : ''}`
+              }
+            >
+              <FileSpreadsheet size={20} />
+              <span>Bulk Calculator</span>
             </NavLink>
             <button
               onClick={handleStartGuide}
@@ -193,6 +204,21 @@ function App() {
                   Calculate distances between ports and postal locations
                 </p>
                 <UnifiedDistanceCalculator isDark={isDark} />
+              </>
+            } />
+            
+            <Route path="/bulk-distance" element={
+              <>
+                <Guide 
+                  pageType="bulk" 
+                  forceShow={showGuide && !localStorage.getItem('hasSeenGuide_bulk')}
+                  onClose={() => setShowGuide(false)}
+                />
+                <h1 className="text-3xl font-bold text-center mb-2">Bulk Distance Calculator</h1>
+                <p className="text-gray-600 text-center mb-8">
+                  Calculate multiple distances at once by uploading a CSV file
+                </p>
+                <BulkDistanceCalculator isDark={isDark} />
               </>
             } />
           </Routes>

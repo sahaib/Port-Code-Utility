@@ -7,7 +7,7 @@ interface Step {
   position: 'top' | 'bottom' | 'left' | 'right';
 }
 
-const getSteps = (pageType: 'lookup' | 'distance' | 'unified'): Step[] => {
+const getSteps = (pageType: 'lookup' | 'distance' | 'unified' | 'bulk'): Step[] => {
   const commonSteps = {
     country: {
       target: '.country-select',
@@ -99,11 +99,24 @@ const getSteps = (pageType: 'lookup' | 'distance' | 'unified'): Step[] => {
           position: 'top'
         }
       ];
+    case 'bulk':
+      return [
+        {
+          target: '.upload-area',
+          content: 'Upload your CSV file here with source and destination locations',
+          position: 'bottom'
+        },
+        {
+          target: '.template-download',
+          content: 'Download a template to see the required CSV format',
+          position: 'bottom'
+        }
+      ];
   }
 };
 
 export const Guide: React.FC<{ 
-  pageType: 'lookup' | 'distance' | 'unified';
+  pageType: 'lookup' | 'distance' | 'unified' | 'bulk';
   forceShow?: boolean;
   onClose?: () => void;
 }> = ({ pageType, forceShow = false, onClose }) => {

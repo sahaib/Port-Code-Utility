@@ -10,8 +10,30 @@ export default defineConfig({
   server: {
     port: 3001,
     host: true,
+    watch: {
+      usePolling: true
+    },
     hmr: {
-      clientPort: 3000
+      clientPort: 3001
+    },
+    proxy: {
+      '/api/proxy': {
+        target: 'https://service.unece.org',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => {
+          // Extract country code from the URL
+          const match = path.match(/\/api\/proxy\/([a-z]{2})\.htm$/i);
+          if (match) {
+            return `/trade/locode/${match[1].toLowerCase()}.htm`;
+          }
+          return path;
+        },
+        headers: {
+          'Accept': 'text/html,application/xhtml+xml',
+          'User-Agent': 'Mozilla/5.0'
+        }
+      }
     }
   },
   build: {

@@ -1,4 +1,4 @@
-import { BASE_URL, PROXY_URL, REQUEST_HEADERS } from "../config/constants";
+import { PROXY_URL, REQUEST_HEADERS } from "../config/constants";
 import { parseHtmlTable } from "../utils/htmlParser";
 import { PortData, PortResponse } from '../types/port';
 import { SearchOptions } from '../types/search';
@@ -25,7 +25,7 @@ export const fetchPortData = async (searchOptions: SearchOptions): Promise<PortR
     if (cachedData && (Date.now() - cachedData.timestamp) < CACHE_DURATION) {
       ports = cachedData.parsedPorts;
     } else {
-      const url = `${PROXY_URL}${encodeURIComponent(`${BASE_URL}/${countryCode.toLowerCase()}.htm`)}`;
+      const url = `${PROXY_URL}/${countryCode.toLowerCase()}.htm`;
       console.log('Requesting URL:', url);
 
       const response = await fetch(url, {
