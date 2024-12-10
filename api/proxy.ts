@@ -1,13 +1,13 @@
 export default {
   async fetch(request: Request, env: any) {
     const corsHeaders = {
-      'Access-Control-Allow-Origin': 'https://portsindex.com',
-      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, HEAD, POST, OPTIONS',
       'Access-Control-Allow-Headers': '*',
       'Access-Control-Max-Age': '86400',
     };
 
-    // Handle CORS preflight
+    // Handle preflight
     if (request.method === 'OPTIONS') {
       return new Response(null, { headers: corsHeaders });
     }
@@ -16,7 +16,7 @@ export default {
     const targetUrl = url.searchParams.get('url');
 
     if (!targetUrl || !targetUrl.startsWith('https://service.unece.org')) {
-      return new Response('Invalid target URL', { status: 400 });
+      return new Response('Invalid target URL', { status: 400, headers: corsHeaders });
     }
 
     try {
@@ -35,7 +35,10 @@ export default {
         },
       });
     } catch (error) {
-      return new Response('Proxy error', { status: 500 });
+      return new Response('Proxy error', { 
+        status: 500,
+        headers: corsHeaders
+      });
     }
   },
 };
