@@ -13,10 +13,6 @@ const CACHE_DURATION = 1000 * 60 * 60 * 24; // 24 hours for country data
 export const fetchPortData = async (searchOptions: SearchOptions): Promise<PortResponse> => {
   const { value, type, countryCode } = searchOptions;
 
-  if (type === 'locode' && (!value || value.length !== 5)) {
-    throw new Error('Invalid LOCODE format');
-  }
-
   if (!countryCode) {
     throw new Error('Country code is required');
   }
@@ -29,34 +25,28 @@ export const fetchPortData = async (searchOptions: SearchOptions): Promise<PortR
     ports = cachedData.parsedPorts;
   } else {
     const url = `${PROXY_URL}${encodeURIComponent(`${BASE_URL}/${countryCode.toLowerCase()}.htm`)}`;
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000);
+    console.log('Requesting URL:', url); // Debug log
 
     try {
-      const response = await fetch(url, {
-        headers: {
-          'Accept': 'text/html',
-          'User-Agent': 'Mozilla/5.0',
-        }
-      });
-      
-      clearTimeout(timeoutId);
+      const response = await fetch(url);
       
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Server response:', errorText);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const countryHtml = await response.text();
-      
       ports = parseHtmlTable(countryHtml);
       
+      // Cache the results
       countryDataCache[countryKey] = {
         html: countryHtml,
         parsedPorts: ports,
         timestamp: Date.now()
       };
     } catch (error) {
-      clearTimeout(timeoutId);
+      console.error('Fetch error:', error);
       throw error;
     }
   }
