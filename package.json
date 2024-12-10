@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "esbuild project/api/proxy.ts --bundle --outfile=dist/proxy.js",
+    "build": "esbuild /Users/sahaib/cats/FY/project/api/proxy.ts --bundle --format=esm --platform=browser --outfile=dist/proxy.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-favicons": "node scripts/generate-favicons.js"

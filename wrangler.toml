@@ -1,9 +1,10 @@
 name = "portsindex-proxy"
-type = "javascript"
+main = "dist/proxy.js"
+compatibility_date = "2024-01-01"
 
 [build]
 command = "npm run build"
 
-[build.upload]
-format = "modules"
-main = "./api/proxy.ts"
+[env.production]
+workers_dev = true
+route = { pattern = "portsindex-proxy.sahaibsingh001-ss.workers.dev", custom_domain = true }
