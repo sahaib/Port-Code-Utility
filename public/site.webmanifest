@@ -83,5 +83,6 @@
       "text": "text",
       "url": "url"
     }
-  }
+  },
+  "manifest_version": "1.0"
 }
