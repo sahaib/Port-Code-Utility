@@ -87,15 +87,17 @@ async function getCoordinates(
 
       // Case 2: Found in UN/LOCODE but no coordinates, try Mapbox with port name
 // Case 2: Found in UN/LOCODE but no coordinates, try Mapbox with port name
+// Case 2: Found in UN/LOCODE but no coordinates, try Mapbox with port name
 if (portData.ports.length > 0) {
     try {
       const portName = portData.ports[0].name;
-      const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
+      const mapboxToken = window.VITE_MAPBOX_TOKEN || import.meta.env.VITE_MAPBOX_TOKEN;
+      
       if (!mapboxToken) {
-        throw new Error('Mapbox token not configured');
+        console.error('Mapbox token not found');
+        throw new Error('Geocoding service not configured');
       }
       
-      // Using the same pattern as locationService.ts
       const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(portName)}.json`;
       const params = new URLSearchParams({
         access_token: mapboxToken,
