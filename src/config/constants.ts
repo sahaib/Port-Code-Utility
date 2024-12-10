@@ -1,4 +1,4 @@
-export const PROXY_URL = 'https://cors-proxy.org/api/proxy?url=';
+export const PROXY_URL = 'https://api.allorigins.win/raw?url=';
 
 export const BASE_URL = 'https://service.unece.org/trade/locode';
 
@@ -49,7 +49,7 @@ export const SUPPORTED_COUNTRIES = {
   'TD': { code: 'TD', name: 'Chad', flag: '🇹🇩', endpoint: '/td.htm' },
   'CL': { code: 'CL', name: 'Chile', flag: '🇨🇱', endpoint: '/cl.htm' },
   'CN': { code: 'CN', name: 'China', flag: '🇨🇳', endpoint: '/cn.htm' },
-  'CX': { code: 'CX', name: 'Christmas Island', flag: '🇨🇽', endpoint: '/cx.htm' },
+  'CX': { code: 'CX', name: 'Christmas Island', flag: '����🇽', endpoint: '/cx.htm' },
   'CC': { code: 'CC', name: 'Cocos (Keeling) Islands', flag: '🇨🇨', endpoint: '/cc.htm' },
   'CO': { code: 'CO', name: 'Colombia', flag: '🇨🇴', endpoint: '/co.htm' },
   'KM': { code: 'KM', name: 'Comoros', flag: '🇰🇲', endpoint: '/km.htm' },
