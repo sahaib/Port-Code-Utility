@@ -1,0 +1,87 @@
+{
+  "name": "Port Distance Calculator & UN/LOCODE Search Tool",
+  "short_name": "Port Calc",
+  "description": "Calculate maritime distances between ports worldwide and search UN/LOCODE data with our comprehensive port information tool.",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "scope": "/",
+  "theme_color": "#2563eb",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "any",
+  "categories": ["utilities", "navigation", "maritime", "transportation"],
+  "shortcuts": [
+    {
+      "name": "Port Lookup",
+      "short_name": "Lookup",
+      "description": "Search for port information using UN/LOCODE",
+      "url": "/?page=lookup",
+      "icons": [{ "src": "/shortcut-lookup.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Distance Calculator",
+      "short_name": "Distance",
+      "description": "Calculate distance between two ports",
+      "url": "/?page=distance",
+      "icons": [{ "src": "/shortcut-distance.png", "sizes": "96x96" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Desktop view of Port Distance Calculator"
+    },
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "Mobile view of Port Distance Calculator"
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "lang": "en-US",
+  "dir": "ltr",
+  "iarc_rating_id": "",
+  "share_target": {
+    "action": "/share",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}

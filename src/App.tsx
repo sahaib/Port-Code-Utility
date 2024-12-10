@@ -11,6 +11,7 @@ import { isValidLocode } from './utils/portUtils';
 import { Disclaimer } from './components/Disclaimer';
 import { Guide } from './components/Guide';
 import { useDarkMode } from './hooks/useDarkMode';
+import { LoadingState } from './components/LoadingState';
 
 function App() {
   const [searchValue, setSearchValue] = useState('');
@@ -139,22 +140,32 @@ function App() {
                     countryCode={countryCode}
                     onChange={setSearchValue}
                     onCountryChange={setCountryCode}
-                    onSubmit={handleSearch}
+                    onSubmit={(value, code) => {
+                      setSearchValue(value);
+                      setCountryCode(code);
+                      handleSearch();
+                    }}
                     isLoading={isLoading}
+                    disabled={isLoading}
+                    isDark={isDark}
                   />
 
                   {error && (
-                    <div className="flex items-center gap-2 text-red-600">
+                    <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
                       <AlertCircle size={20} />
                       <span>{error}</span>
                     </div>
                   )}
 
-                  <div className="w-full max-w-4xl grid gap-6">
-                    {portData.map((port) => (
-                      <PortCard key={port.locode} port={port} />
-                    ))}
-                  </div>
+                  {isLoading ? (
+                    <LoadingState message="Searching ports..." />
+                  ) : portData.length > 0 ? (
+                    <div className="w-full max-w-4xl grid gap-6">
+                      {portData.map((port) => (
+                        <PortCard key={port.locode} port={port} />
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
               </>
             } />

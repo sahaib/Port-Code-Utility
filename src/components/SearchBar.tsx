@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, Loader2, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { SUPPORTED_COUNTRIES } from '../config/constants';
 
 interface SearchBarProps {
@@ -11,6 +11,7 @@ interface SearchBarProps {
   isLoading: boolean;
   hideSearchIcon?: boolean;
   isDark?: boolean;
+  disabled?: boolean;
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
@@ -21,7 +22,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   onSubmit,
   isLoading,
   hideSearchIcon,
-  isDark
+  isDark,
+  disabled
 }) => {
   const [countrySearch, setCountrySearch] = useState('');
   const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
@@ -101,21 +103,23 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && onSubmit(value, countryCode)}
+          onKeyDown={(e) => e.key === 'Enter' && !isLoading && onSubmit(value, countryCode)}
           placeholder="Enter LOCODE (in CAPS) or port name..."
-          className="search-input w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={`search-input w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+            isLoading ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
+          disabled={isLoading}
         />
         {!hideSearchIcon && (
           <button
             onClick={() => onSubmit(value, countryCode)}
-            disabled={isLoading}
+            disabled={disabled || isLoading}
             className={`absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full
               ${isDark 
                 ? 'text-gray-300 hover:bg-gray-700 hover:text-white' 
                 : 'text-gray-600 hover:bg-gray-100'
               } transition-colors`}
           >
-            {isLoading ? <Loader2 className="animate-spin" size={20} /> : <Search size={20} />}
           </button>
         )}
       </div>

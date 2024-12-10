@@ -1,6 +1,6 @@
 // Proxy for local testing and production
 export const PROXY_URL = import.meta.env.DEV 
-  ? 'http://localhost:3000/api/proxy?url='
+  ? 'http://localhost:3001/api/proxy?url='
   : '/api/proxy?url=';
 
 export const BASE_URL = 'https://service.unece.org/trade/locode';

@@ -1,7 +1,14 @@
 import { BASE_URL, PROXY_URL } from "../config/constants";
 import { parseHtmlTable } from "../utils/htmlParser";
-import { PortResponse } from '../types/port';
+import { PortData, PortResponse } from '../types/port';
 import { SearchOptions } from '../types/search';
+
+const countryDataCache: Record<string, { 
+  html: string;
+  parsedPorts: PortData[];
+  timestamp: number 
+}> = {};
+const CACHE_DURATION = 1000 * 60 * 60 * 24; // 24 hours for country data
 
 export const fetchPortData = async (searchOptions: SearchOptions): Promise<PortResponse> => {
   const { value, type, countryCode } = searchOptions;
@@ -14,43 +21,72 @@ export const fetchPortData = async (searchOptions: SearchOptions): Promise<PortR
     throw new Error('Country code is required');
   }
 
-  const url = `${PROXY_URL}${encodeURIComponent(`${BASE_URL}/${countryCode.toLowerCase()}.htm`)}`;
-
-  try {
+  const countryKey = countryCode.toLowerCase();
+  const cachedData = countryDataCache[countryKey];
+  let ports: PortData[];
+  
+  if (cachedData && (Date.now() - cachedData.timestamp) < CACHE_DURATION) {
+    ports = cachedData.parsedPorts;
+  } else {
+    const url = `${PROXY_URL}${encodeURIComponent(`${BASE_URL}/${countryCode.toLowerCase()}.htm`)}`;
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 15000);
 
-    const response = await fetch(url, {
-      signal: controller.signal,
-      headers: {
-        'Accept': 'text/html',
-        'User-Agent': 'Mozilla/5.0',
-        'Origin': 'http://localhost:5173'
+    try {
+      const response = await fetch(url, {
+        headers: {
+          'Accept': 'text/html',
+          'User-Agent': 'Mozilla/5.0',
+          'Origin': window.location.origin
+        },
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    });
-    
-    clearTimeout(timeoutId);
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      
+      const countryHtml = await response.text();
+      
+      ports = parseHtmlTable(countryHtml);
+      
+      countryDataCache[countryKey] = {
+        html: countryHtml,
+        parsedPorts: ports,
+        timestamp: Date.now()
+      };
+    } catch (error) {
+      clearTimeout(timeoutId);
+      throw error;
     }
-    
-    const html = await response.text();
-    const ports = parseHtmlTable(html);
-    
-    const filteredPorts = type === 'locode' 
-      ? ports.filter(port => port.locode === value.toUpperCase())
-      : ports.filter(port => 
-          port.name.toLowerCase().includes(value.toLowerCase()) ||
-          port.nameWoDiacritics.toLowerCase().includes(value.toLowerCase())
-        );
-
-    return { 
-      ports: filteredPorts.slice(0, 10), // Limit results for name search
-      country: countryCode.toUpperCase() 
-    };
-  } catch (error) {
-    console.error('Error fetching port data:', error);
-    throw new Error('Failed to fetch port data. Please try again later.');
   }
+
+  if (type === 'locode') {
+    const exactMatch = ports.find(port => port.locode === value.toUpperCase());
+    return {
+      ports: exactMatch ? [exactMatch] : [],
+      country: countryCode.toUpperCase()
+    };
+  }
+
+  const searchTerm = value.toLowerCase();
+  const filteredPorts = ports.filter(port => 
+    port.name.toLowerCase().includes(searchTerm) ||
+    port.nameWoDiacritics.toLowerCase().includes(searchTerm)
+  ).slice(0, 10);
+
+  return {
+    ports: filteredPorts,
+    country: countryCode.toUpperCase()
+  };
+};
+
+export const clearCountryCache = () => {
+  Object.keys(countryDataCache).forEach(key => {
+    if (Date.now() - countryDataCache[key].timestamp > CACHE_DURATION) {
+      delete countryDataCache[key];
+    }
+  });
 };

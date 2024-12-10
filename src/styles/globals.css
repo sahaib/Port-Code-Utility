@@ -56,36 +56,18 @@
 
 /* Navigation and Dark Mode Styles */
 .nav-button {
-  @apply bg-white text-gray-700 hover:bg-gray-50;
-}
-
-.dark .nav-button {
-  @apply bg-gray-800 text-gray-300 hover:bg-gray-700 border-gray-700;
-  box-shadow: 
-    4px 4px 8px rgba(0, 0, 0, 0.3),
-    -4px -4px 8px rgba(30, 41, 59, 0.5);
+  @apply bg-white dark:bg-dark-card 
+         text-gray-700 dark:text-dark-text
+         border border-gray-200 dark:border-dark-border
+         hover:bg-gray-50 dark:hover:bg-gray-800
+         active:bg-gray-100 dark:active:bg-gray-700;
 }
 
 .nav-button.active {
-  @apply bg-blue-600 text-white;
-}
-
-.dark .nav-button.active {
-  @apply bg-blue-600 text-white border-blue-500;
-  box-shadow: 
-    4px 4px 8px rgba(0, 0, 0, 0.3),
-    -4px -4px 8px rgba(37, 99, 235, 0.2);
-}
-
-.dark .nav-button:hover {
-  background: linear-gradient(145deg, #1f2937, #374151);
-  box-shadow: 
-    6px 6px 12px rgba(0, 0, 0, 0.3),
-    -6px -6px 12px rgba(30, 41, 59, 0.5);
-}
-
-.dark .nav-button.guide {
-  @apply text-blue-400 hover:text-blue-300;
+  @apply bg-blue-500 dark:bg-blue-600
+         text-white dark:text-white
+         border-blue-600 dark:border-blue-700
+         hover:bg-blue-600 dark:hover:bg-blue-700;
 }
 
 /* Dark Mode Component Styles */
