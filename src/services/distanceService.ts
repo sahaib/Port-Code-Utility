@@ -2,8 +2,7 @@ import { BulkCalculationRow, BulkCalculationResult, ProcessingStats } from '../t
 import { searchPostalLocation } from './locationService';
 import { fetchPortData } from './portService';
 import { calculateDistance } from '../utils/distanceUtils';
-import { getMapboxToken } from '../config/mapbox';
-
+import { env } from '../config/env';
 
 export const calculateBulkDistances = async (
   data: Array<BulkCalculationRow>,
@@ -90,7 +89,7 @@ async function getCoordinates(
         if (portData.ports.length > 0) {
         try {
             const portName = portData.ports[0].name;
-            const mapboxToken = getMapboxToken();
+            const mapboxToken = env.MAPBOX_TOKEN;
       
       if (!mapboxToken) {
         console.error('Mapbox token not found');
