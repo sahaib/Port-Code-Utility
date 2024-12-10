@@ -1,8 +1,8 @@
-import { VercelRequest, VercelResponse } from '@vercel/node';
-import fetch from 'node-fetch';
-import https from 'https';
+const { VercelRequest, VercelResponse } = require('@vercel/node');
+const nodeFetch = require('node-fetch');
+const https = require('https');
 
-const handler = async (req: VercelRequest, res: VercelResponse) => {
+module.exports = async function handler(req, res) {
   const targetUrl = req.query.url;
   
   if (!targetUrl) {
@@ -14,7 +14,7 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
   });
 
   try {
-    const response = await fetch(targetUrl as string, {
+    const response = await nodeFetch(targetUrl, {
       agent,
       headers: {
         'User-Agent': 'Mozilla/5.0'
@@ -31,6 +31,4 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     console.error('Proxy error:', error);
     return res.status(500).json({ error: 'Failed to fetch data' });
   }
-}
-
-export default handler; 
+} 
