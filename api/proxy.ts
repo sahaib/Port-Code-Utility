@@ -2,54 +2,42 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 import fetch from 'node-fetch';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // Handle CORS preflight
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', '*');
+    return res.status(200).end();
+  }
+
   const targetUrl = req.query.url as string;
   
   if (!targetUrl) {
-    console.error('Missing URL parameter');
     return res.status(400).json({ error: 'URL parameter is required' });
   }
-
-  console.log('Fetching URL:', targetUrl);
 
   try {
     const response = await fetch(targetUrl, {
       method: 'GET',
       headers: {
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache'
-      },
-      redirect: 'follow',
-      timeout: 8000
+        'Accept': '*/*',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0',
+        'Origin': 'https://service.unece.org',
+        'Referer': 'https://service.unece.org/'
+      }
     });
-
-    console.log('Response Status:', response.status);
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
 
     const data = await response.text();
     
-    // Set production-friendly headers
+    // Set CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', '*');
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.setHeader('Cache-Control', 'public, max-age=300'); // 5 min cache
     
     return res.status(200).send(data);
   } catch (error) {
-    console.error('Proxy error:', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-      url: targetUrl
-    });
-    
-    return res.status(500).json({ 
-      error: 'Failed to fetch data',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    });
+    console.error('Proxy error:', error);
+    return res.status(500).json({ error: 'Failed to fetch data' });
   }
 } 
