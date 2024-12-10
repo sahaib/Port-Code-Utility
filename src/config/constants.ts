@@ -1,6 +1,6 @@
 // Proxy URL should always be relative when using Vercel's API routes
 export const PROXY_URL = import.meta.env.DEV 
-  ? 'http://localhost:3000/api/proxy?url='
+  ? 'http://localhost:3001/api/proxy?url='
   : 'https://portsindex.com/api/proxy?url=';
 
 export const BASE_URL = 'https://service.unece.org/trade/locode';
