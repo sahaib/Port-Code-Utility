@@ -89,8 +89,13 @@ async function getCoordinates(
       if (portData.ports.length > 0) {
         try {
           const portName = portData.ports[0].name;
+          const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
+          if (!mapboxToken) {
+            throw new Error('Mapbox token not configured');
+          }
+          
           const response = await fetch(
-            `https://api.mapbox.com/geocoding/v5/mapbox.places/${portName} port ${countryCode}.json?access_token=${import.meta.env.VITE_MAPBOX_TOKEN}&types=poi&limit=1`
+            `https://api.mapbox.com/geocoding/v5/mapbox.places/${portName} port ${countryCode}.json?access_token=${mapboxToken}&types=poi&limit=1`
           );
           const data = await response.json();
           
