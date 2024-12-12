@@ -21,9 +21,10 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
         rewrite: (path) => {
-          const match = path.match(/\/api\/proxy\/([a-z]{2})\.htm$/i);
-          if (match) {
-            return `/trade/locode/${match[1].toLowerCase()}.htm`;
+          const url = new URL(path, 'http://dummy.com');
+          const targetUrl = url.searchParams.get('url');
+          if (targetUrl) {
+            return targetUrl.replace('https://service.unece.org', '');
           }
           return path;
         },
@@ -50,5 +51,8 @@ export default defineConfig({
     alias: {
       '@': '/src'
     }
+  },
+  define: {
+    'process.env': {}
   }
 });

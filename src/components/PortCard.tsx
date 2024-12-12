@@ -145,6 +145,15 @@ export const PortCard: React.FC<PortCardProps> = ({ port }) => {
             <span>{port.remarks}</span>
           </div>
         )}
+        
+        {port.unlocodeDate && (
+          <div className="flex items-center gap-1 mt-1">
+            <Calendar size={14} className="text-gray-500" />
+            <p className="text-xs sm:text-sm text-gray-600">
+              UN/LOCODE Update: {parseUnlocodeDateFormat(port.unlocodeDate)}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

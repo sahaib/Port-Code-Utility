@@ -10,7 +10,8 @@
     "build": "npm run build:web && npm run build:worker",
     "preview": "vite preview",
     "generate-favicons": "node scripts/generate-favicons.js",
-    "vercel-dev": "vercel dev"
+    "vercel-dev": "vercel dev",
+    "prisma:studio": "prisma studio"
   },
   "dependencies": {
     "@types/node-fetch": "^2.6.11",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
+    "@types/express": "^5.0.0",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vercel/node": "^3.2.29",
@@ -46,5 +48,8 @@
     "workbox-precaching": "^7.0.0",
     "workbox-routing": "^7.0.0",
     "workbox-strategies": "^7.0.0"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }

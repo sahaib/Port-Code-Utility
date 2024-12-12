@@ -1,15 +1,21 @@
 export interface PortData {
   locode: string;
   name: string;
-  nameWoDiacritics: string;
-  subdivision: string;
+  nameWoDiacritics: string | null;
+  coordinates: string;
+  latitude: number;
+  longitude: number;
+  subdivision: string | null;
   function: string;
   status: string;
-  date: string;
-  iata: string;
-  coordinates: string;
-  remarks: string;
-  type: 'port' | 'postal';
+  countryCode: string;
+  date: string | null;
+  iata: string | null;
+  remarks: string | null;
+  type: 'port';
+  unlocodeDate?: string | null;
+  updatedAt?: Date;
+  createdAt?: Date;
 }
 
 export interface PortResponse {

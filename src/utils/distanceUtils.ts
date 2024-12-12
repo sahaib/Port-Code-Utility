@@ -60,4 +60,32 @@ export const calculateDistance = (
   
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   return R * c;
+};
+
+export const calculateRouteDistance = async (
+  origin: { latitude: number; longitude: number },
+  destination: { latitude: number; longitude: number },
+  mapboxToken: string
+): Promise<{ distance: number; geometry: any }> => {
+  const response = await fetch(
+    `https://api.mapbox.com/directions/v5/mapbox/driving/${origin.longitude},${origin.latitude};${destination.longitude},${destination.latitude}?geometries=geojson&access_token=${mapboxToken}`
+  );
+  
+  if (!response.ok) {
+    throw new Error('Failed to calculate route');
+  }
+
+  const data = await response.json();
+  if (!data.routes?.[0]) {
+    throw new Error('No route found');
+  }
+
+  return {
+    distance: data.routes[0].distance / 1852, // Convert to nautical miles
+    geometry: {
+      type: 'Feature',
+      properties: {},
+      geometry: data.routes[0].geometry
+    }
+  };
 }; 

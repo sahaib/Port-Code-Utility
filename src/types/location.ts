@@ -16,6 +16,7 @@ export interface PortLocation extends BaseLocation {
   locode: string;
   function: string;
   status: string;
+  unlocodeDate?: string | null;
 }
 
 export interface PostalLocation extends BaseLocation {

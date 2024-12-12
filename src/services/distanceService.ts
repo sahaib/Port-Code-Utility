@@ -2,6 +2,7 @@ import { BulkCalculationRow, BulkCalculationResult, ProcessingStats } from '../t
 import { searchPostalLocation } from './locationService';
 import { fetchPortData } from './portService';
 import { calculateDistance } from '../utils/distanceUtils';
+import { logger } from '../utils/logger';
 import { env } from '../config/env';
 
 export const calculateBulkDistances = async (
@@ -72,68 +73,51 @@ async function getCoordinates(
         countryCode
       });
 
-      // Case 1: Found in UN/LOCODE with coordinates
-      if (portData.ports.length > 0 && portData.ports[0].coordinates) {
-        try {
-          const [lat, lon] = portData.ports[0].coordinates.split(' ').map(coord => {
-            const deg = parseFloat(coord.slice(0, -1));
-            const dir = coord.slice(-1);
-            return dir === 'S' || dir === 'W' ? -deg : deg;
+      if (portData.ports.length > 0) {
+        const port = portData.ports[0];
+        const mapboxToken = env.MAPBOX_TOKEN;
+        
+        if (!mapboxToken) {
+          throw new Error('Mapbox token not configured');
+        }
+
+        // Try multiple search strategies
+        const searchQueries = [
+          `port of ${port.name}`, // Try with "port of" prefix
+          `${port.name} port`,    // Try with "port" suffix
+          port.name,              // Try just the name
+          `${port.name} ${countryCode}` // Try with country code
+        ];
+
+        for (const query of searchQueries) {
+          const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json`;
+          const params = new URLSearchParams({
+            access_token: mapboxToken,
+            types: 'place,poi,locality',
+            limit: '1',
+            country: countryCode.toLowerCase()
           });
-          return { latitude: lat, longitude: lon };
-        } catch (error) {
-          console.warn(`Invalid coordinate format in UN/LOCODE for ${location}`);
+
+          const response = await fetch(`${endpoint}?${params}`);
+          if (!response.ok) continue;
+          
+          const data = await response.json();
+          if (data.features?.[0]?.center) {
+            return {
+              latitude: data.features[0].center[1],
+              longitude: data.features[0].center[0]
+            };
+          }
         }
       }
 
-        if (portData.ports.length > 0) {
-        try {
-            const portName = portData.ports[0].name;
-            const mapboxToken = env.MAPBOX_TOKEN;
-      
-      if (!mapboxToken) {
-        console.error('Mapbox token not found');
-        throw new Error('Geocoding service not configured');
-      }
-      
-      const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(portName)}.json`;
-      const params = new URLSearchParams({
-        access_token: mapboxToken,
-        types: 'poi',
-        limit: '1',
-        country: countryCode.toLowerCase()
-      });
-  
-      const response = await fetch(`${endpoint}?${params}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch location data');
-      }
-      
-      const data = await response.json();
-      
-      if (data.features && data.features.length > 0) {
-        return {
-          latitude: data.features[0].center[1],
-          longitude: data.features[0].center[0]
-        };
-      }
-      throw new Error(`Port ${location} (${portName}) found in UN/LOCODE but coordinates not available`);
-    } catch (error) {
-      console.error('Geocoding error:', error);
-      throw new Error(`Port ${location} found but geocoding failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    }
-  }
-
-      throw new Error(`Port ${location} not found in UN/LOCODE database`);
+      throw new Error(`Port ${location} not found or coordinates unavailable`);
     } else {
       const result = await searchPostalLocation(location, 'US');
-      if (result.locations.length === 0) {
-        throw new Error(`Postal location ${location} not found`);
-      }
-      return result.locations[0].coordinates;
+      return result.locations[0]?.coordinates || null;
     }
   } catch (error) {
-    console.error(`Error getting coordinates for ${locationType} location ${location}:`, error);
+    logger.error(`Error getting coordinates for ${locationType} location ${location}:`, { error });
     throw error;
   }
 } 

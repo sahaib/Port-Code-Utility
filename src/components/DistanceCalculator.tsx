@@ -1,12 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { SearchBar } from './SearchBar';
 import { Map, NavigationControl, Marker, Layer, Source } from 'react-map-gl';
-import { parseCoordinates } from '../utils/distanceUtils';
 import { Ship, Loader2 } from 'lucide-react';
 import { PortData } from '../types/port';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { MapPin } from 'lucide-react';
 import mapboxgl from 'mapbox-gl';
+import { getPortCoordinates } from '../utils/coordinateUtils';
 
 
 interface DistanceCalculatorProps {
@@ -48,7 +47,6 @@ export const DistanceCalculator: React.FC<DistanceCalculatorProps> = ({ onSearch
     setError(null);
   
     try {
-      // Use the same search function as port lookup
       const [originPorts, destPorts] = await Promise.all([
         onSearch(originSearch, originCountry),
         onSearch(destSearch, destCountry)
@@ -61,19 +59,20 @@ export const DistanceCalculator: React.FC<DistanceCalculatorProps> = ({ onSearch
       const originPort = originPorts[0];
       const destPort = destPorts[0];
   
-      // Log coordinates for debugging
-      console.log('Origin coordinates:', originPort.coordinates);
-      console.log('Destination coordinates:', destPort.coordinates);
+      const [originCoords, destCoords] = await Promise.all([
+        getPortCoordinates(originPort),
+        getPortCoordinates(destPort)
+      ]);
   
-      if (!originPort.coordinates || !destPort.coordinates) {
-        throw new Error('Missing coordinates for one or both ports');
+      if (!originCoords || !destCoords) {
+        throw new Error('Could not determine coordinates for one or both ports');
       }
   
       setOrigin(originPort);
       setDestination(destPort);
   
       const response = await fetch(
-        `https://api.mapbox.com/directions/v5/mapbox/driving/${parseCoordinates(originPort.coordinates).longitude},${parseCoordinates(originPort.coordinates).latitude};${parseCoordinates(destPort.coordinates).longitude},${parseCoordinates(destPort.coordinates).latitude}?geometries=geojson&access_token=${import.meta.env.VITE_MAPBOX_TOKEN}`
+        `https://api.mapbox.com/directions/v5/mapbox/driving/${originCoords.longitude},${originCoords.latitude};${destCoords.longitude},${destCoords.latitude}?geometries=geojson&access_token=${import.meta.env.VITE_MAPBOX_TOKEN}`
       );
       const data = await response.json();
       
@@ -187,18 +186,18 @@ export const DistanceCalculator: React.FC<DistanceCalculatorProps> = ({ onSearch
             <NavigationControl />
             {origin && (
               <Marker
-                latitude={parseCoordinates(origin.coordinates).latitude}
-                longitude={parseCoordinates(origin.coordinates).longitude}
+                latitude={origin.latitude}
+                longitude={origin.longitude}
               >
-                {origin.type === 'port' ? <Ship className="text-blue-500" /> : <MapPin className="text-red-500" />}
+                <Ship className="text-blue-500" />
               </Marker>
             )}
             {destination && (
               <Marker
-                latitude={parseCoordinates(destination.coordinates).latitude}
-                longitude={parseCoordinates(destination.coordinates).longitude}
+                latitude={destination.latitude}
+                longitude={destination.longitude}
               >
-                {destination.type === 'port' ? <Ship className="text-blue-500" /> : <MapPin className="text-red-500" />}
+                <Ship className="text-blue-500" />
               </Marker>
             )}
             {routeGeometry && (

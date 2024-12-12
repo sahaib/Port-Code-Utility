@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Map, NavigationControl, Marker, Source, Layer } from 'react-map-gl';
-import { parseCoordinates } from '../utils/distanceUtils';
 import { Ship, MapPin, Loader2 } from 'lucide-react';
 import { Location, LocationType } from '../types/location';
 import { searchPostalLocation } from '../services/locationService';
@@ -8,9 +7,9 @@ import { fetchPortData } from '../services/portService';
 import { isValidLocode } from '../utils/portUtils';
 import { LocationSearch } from './LocationSearch';
 import { getBounds, getZoomLevel } from '../utils/mapUtils';
-import '../styles/globals.css';
+import { getPortCoordinates } from '../utils/coordinateUtils';
 import { env } from '../config/env';
-  
+import '../styles/globals.css';
 
 export const UnifiedDistanceCalculator: React.FC<{ isDark: boolean }> = ({ isDark }) => {
   const [origin, setOrigin] = useState<Location | null>(null);
@@ -39,16 +38,23 @@ export const UnifiedDistanceCalculator: React.FC<{ isDark: boolean }> = ({ isDar
           type: isValidLocode(value) ? 'locode' : 'name',
           countryCode
         });
-        return response.ports.map(port => ({
-          type: 'port',
-          id: port.locode,
-          name: port.name,
-          countryCode: port.locode.slice(0, 2),
-          coordinates: parseCoordinates(port.coordinates),
-          locode: port.locode,
-          function: port.function,
-          status: port.status
-        }));
+
+        const locations = await Promise.all(
+          response.ports.map(async port => {
+            const coords = await getPortCoordinates(port);
+            return {
+              type: 'port' as const,
+              id: port.locode,
+              name: port.name,
+              countryCode: port.locode.slice(0, 2),
+              coordinates: coords || { latitude: 0, longitude: 0 },
+              locode: port.locode,
+              function: port.function,
+              status: port.status
+            };
+          })
+        );
+        return locations.filter(loc => loc.coordinates.latitude !== 0);
       } else {
         const response = await searchPostalLocation(value, countryCode);
         return response.locations;

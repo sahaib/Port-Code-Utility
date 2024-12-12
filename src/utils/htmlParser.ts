@@ -1,13 +1,5 @@
 import { PortData } from '../types/port';
 
-const extractCellContent = (cell: HTMLTableCellElement | null): string => {
-  try {
-    return cell?.textContent?.trim().replace(/&nbsp;/g, '').trim() || '';
-  } catch {
-    return '';
-  }
-};
-
 export const parseHtmlTable = (html: string): PortData[] => {
   if (!html) {
     throw new Error('Empty HTML content received');
@@ -16,7 +8,6 @@ export const parseHtmlTable = (html: string): PortData[] => {
   try {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
-    
     const table = doc.querySelector('table[border="1"][cellpadding="1"]');
     
     if (!table) {
@@ -25,39 +16,50 @@ export const parseHtmlTable = (html: string): PortData[] => {
     }
 
     const rows = Array.from(table.querySelectorAll('tr'));
-    const dataRows = rows.slice(1);
+    const dataRows = rows.slice(1); // Skip header row
     
-    const ports = dataRows
+    return dataRows
       .map(row => {
         const cells = Array.from(row.querySelectorAll('td'));
-        if (cells.length < 10) return null;
+        if (cells.length < 11) return null;
 
-        const locodeCell = extractCellContent(cells[1]);
-        if (!locodeCell) return null;
+        const countryCode = cells[1]?.textContent?.slice(0, 2) || '';
+        const locodePart = cells[1]?.textContent?.slice(2).trim() || '';
+        
+        if (!countryCode || !locodePart) return null;
 
-        // Get country code from the LOCODE itself
-        const countryCode = locodeCell.slice(0, 2);
-        const locodePart = locodeCell.slice(2).trim();
+        // Extract coordinates in the exact format shown in Prisma Studio
+        const coordText = cells[9]?.textContent?.trim() || '';
+        const [latStr, lonStr] = coordText.split(' ').map(c => c.trim());
+        
+        // Parse coordinates to match the database format (e.g., 32.86666666666667)
+        const latitude = parseFloat(latStr) || 0;
+        const longitude = parseFloat(lonStr) || 0;
 
         return {
+          id: `cm4juk${Math.random().toString(36).substr(2, 8)}`, // Generate an ID similar to the database
           locode: `${countryCode}${locodePart}`,
-          name: extractCellContent(cells[2]),
-          nameWoDiacritics: extractCellContent(cells[3]),
-          subdivision: extractCellContent(cells[4]),
-          function: extractCellContent(cells[5]),
-          status: extractCellContent(cells[6]),
-          date: extractCellContent(cells[7]),
-          iata: extractCellContent(cells[8]),
-          coordinates: extractCellContent(cells[9]),
-          remarks: extractCellContent(cells[10])
+          name: cells[2]?.textContent?.trim() || '',
+          nameWoDiacritics: cells[3]?.textContent?.trim() || null,
+          latitude,
+          longitude,
+          countryCode,
+          function: cells[5]?.textContent?.trim() || '---3-----',  // Default function code
+          status: cells[6]?.textContent?.trim() || 'RL',          // Default status
+          subdivision: cells[4]?.textContent?.trim() || null,
+          iata: cells[8]?.textContent?.trim() || null,
+          remarks: cells[10]?.textContent?.trim() || null,
+          unlocodeDate: cells[7]?.textContent?.trim() || null,
+          createdAt: new Date(),
+          updatedAt: new Date()
         };
       })
       .filter((port): port is PortData => 
         port !== null && 
+        typeof port === 'object' &&
+        typeof port.locode === 'string' &&
         port.locode.length === 5
       );
-
-    return ports;
   } catch (error) {
     console.error('Error parsing HTML:', error);
     return [];

@@ -6,6 +6,11 @@ export const searchPostalLocation = async (
   countryCode: string
 ): Promise<LocationSearchResult> => {
   const mapboxToken = env.MAPBOX_TOKEN;
+  
+  if (!mapboxToken) {
+    throw new Error('MapBox token not configured');
+  }
+
   const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json`;
   
   const params = new URLSearchParams({

@@ -1,5 +1,7 @@
 interface ImportMetaEnv {
   readonly VITE_MAPBOX_TOKEN: string;
+  readonly DATABASE_URL: string;
+  readonly CACHE_EXPIRATION_TIME: string;
 }
 
 interface ImportMeta {

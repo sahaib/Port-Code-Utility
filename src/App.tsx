@@ -13,6 +13,7 @@ import { Guide } from './components/Guide';
 import { useDarkMode } from './hooks/useDarkMode';
 import { LoadingState } from './components/LoadingState';
 import { BulkDistanceCalculator } from './components/BulkDistanceCalculator';
+import { testDatabaseConnection } from './utils/dbTest';
 
 function App() {
   const [searchValue, setSearchValue] = useState('');
@@ -44,27 +45,44 @@ function App() {
         value: searchValue,
         type: searchType,
         countryCode
+      }).catch(err => {
+        throw new Error(err.message || 'Failed to fetch port data');
       });
 
-      setPortData(response.ports);
-      
-      if (response.ports.length === 0) {
-        setError(`No ports found ${searchType === 'locode' ? 'with the specified LOCODE' : 'matching the search term'}`);
+      if (response?.ports) {
+        setPortData(response.ports);
+        if (response.ports.length === 0) {
+          setError(`No ports found ${searchType === 'locode' ? 'with the specified LOCODE' : 'matching the search term'}`);
+        }
+      } else {
+        setError('Invalid response format from server');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch port data');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch port data';
+      setError(errorMessage);
+      console.error('Search error:', errorMessage);
     } finally {
       setIsLoading(false);
     }
   };
 
   const handlePortSearch = async (value: string, countryCode: string): Promise<PortData[]> => {
-    const response = await fetchPortData({
-      value,
-      type: isValidLocode(value) ? 'locode' : 'name',
-      countryCode
-    });
-    return response.ports;
+    if (!value || !countryCode) {
+      throw new Error('Search value and country code are required');
+    }
+
+    try {
+      const response = await fetchPortData({
+        value,
+        type: isValidLocode(value) ? 'locode' : 'name',
+        countryCode
+      });
+      
+      return response.ports;
+    } catch (error) {
+      console.error('Port search error:', error);
+      throw new Error('Failed to fetch port data');
+    }
   };
 
   const handleStartGuide = () => {
@@ -74,6 +92,12 @@ function App() {
     localStorage.removeItem(`hasSeenGuide_bulk`);
     setShowGuide(true);
   };
+
+  testDatabaseConnection().then(connected => {
+    if (!connected) {
+      console.error('⚠️ Database connection failed');
+    }
+  });
 
   return (
     <BrowserRouter>

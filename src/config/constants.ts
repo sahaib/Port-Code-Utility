@@ -1,5 +1,6 @@
-export const PROXY_URL = import.meta.env.DEV
-  ? 'http://localhost:3001/api/proxy?url='
+// Update in src/config/constants.ts
+export const PROXY_URL = import.meta.env.MODE === 'development'
+  ? '/api/proxy?url='
   : 'https://portsindex-proxy.sahaibsingh001-ss.workers.dev/?url=';
 
 export const CLIENT_HEADERS = {
