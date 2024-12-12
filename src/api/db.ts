@@ -1,6 +1,4 @@
-const API_URL = import.meta.env.MODE === 'development' 
-  ? 'http://localhost:3000/api'
-  : 'https://ports-index-backend.vercel.app/api';
+const API_URL = 'https://ports-index-backend.vercel.app/api';
 
 export const testDatabaseConnection = async (): Promise<boolean> => {
   try {

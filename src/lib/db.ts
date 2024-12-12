@@ -1,8 +1,6 @@
 import { PortData } from '../types/port';
 
-const API_URL = import.meta.env.MODE === 'development'
-  ? 'http://localhost:3000'
-  : 'https://ports-index-backend.vercel.app';
+const API_URL = 'https://ports-index-backend.vercel.app';
 
 export async function findPortByLocode(locode: string): Promise<PortData | null> {
   const response = await fetch(`${API_URL}/ports/${locode}`);
