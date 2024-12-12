@@ -20,7 +20,7 @@ export const env = {
 } as const;
 
 // Validate required environment variables
-const requiredEnvVars = ['DATABASE_URL', 'MAPBOX_TOKEN'] as const;
+const requiredEnvVars = ['MAPBOX_TOKEN'] as const;
 
 for (const key of requiredEnvVars) {
   if (!env[key]) {
