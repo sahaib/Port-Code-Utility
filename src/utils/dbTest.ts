@@ -1,5 +1,5 @@
 import { logger } from './logger';
-import { testDatabaseConnection as apiTestConnection } from '../api/db';
+import { testDatabaseConnection as apiTestConnection } from '../../backend/src/api/db';
 
 export async function testDatabaseConnection() {
   try {

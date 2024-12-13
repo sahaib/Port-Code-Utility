@@ -16,6 +16,7 @@ export interface PortData {
   unlocodeDate?: string | null;
   updatedAt?: Date;
   createdAt?: Date;
+  distance?: number;
 }
 
 export interface PortResponse {

@@ -54,7 +54,8 @@ export default defineConfig({
   },
   define: {
     'process.env': {},
-    'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL),
-    'import.meta.env.VITE_MAPBOX_TOKEN': JSON.stringify(process.env.VITE_MAPBOX_TOKEN)
+    'import.meta.env': JSON.stringify({
+      VITE_MAPBOX_TOKEN: process.env.VITE_MAPBOX_TOKEN
+    })
   }
 });

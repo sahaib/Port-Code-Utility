@@ -14,6 +14,7 @@ import { useDarkMode } from './hooks/useDarkMode';
 import { LoadingState } from './components/LoadingState';
 import { BulkDistanceCalculator } from './components/BulkDistanceCalculator';
 import { testDatabaseConnection } from './utils/dbTest';
+import { NearbyPortsSearch } from './components/NearbyPortsSearch';
 
 function App() {
   const [searchValue, setSearchValue] = useState('');
@@ -90,6 +91,7 @@ function App() {
     localStorage.removeItem(`hasSeenGuide_distance`);
     localStorage.removeItem(`hasSeenGuide_unified`);
     localStorage.removeItem(`hasSeenGuide_bulk`);
+    localStorage.removeItem(`hasSeenGuide_nearby`);
     setShowGuide(true);
   };
 
@@ -143,6 +145,15 @@ function App() {
             >
               <FileSpreadsheet size={20} />
               <span>Bulk Calculator</span>
+            </NavLink>
+            <NavLink 
+              to="/nearby-ports" 
+              className={({ isActive }) => 
+                `nav-button flex items-center gap-2 px-5 py-2.5 rounded-lg transition-all ${isActive ? 'active' : ''}`
+              }
+            >
+              <MapPin size={20} />
+              <span>Find Nearby Ports</span>
             </NavLink>
             <button
               onClick={handleStartGuide}
@@ -243,6 +254,21 @@ function App() {
                   Calculate multiple distances at once by uploading a CSV file
                 </p>
                 <BulkDistanceCalculator isDark={isDark} />
+              </>
+            } />
+            
+            <Route path="/nearby-ports" element={
+              <>
+                <Guide 
+                  pageType="nearby" 
+                  forceShow={showGuide && !localStorage.getItem('hasSeenGuide_nearby')}
+                  onClose={() => setShowGuide(false)}
+                />
+                <h1 className="text-3xl font-bold text-center mb-2">Find Nearby Ports</h1>
+                <p className="text-gray-600 text-center mb-8">
+                  Discover ports within a specified radius of any location
+                </p>
+                <NearbyPortsSearch isDark={isDark} />
               </>
             } />
           </Routes>

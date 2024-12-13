@@ -7,7 +7,7 @@ interface Step {
   position: 'top' | 'bottom' | 'left' | 'right';
 }
 
-const getSteps = (pageType: 'lookup' | 'distance' | 'unified' | 'bulk'): Step[] => {
+const getSteps = (pageType: 'lookup' | 'distance' | 'unified' | 'bulk' | 'nearby'): Step[] => {
   const commonSteps = {
     country: {
       target: '.country-select',
@@ -112,14 +112,39 @@ const getSteps = (pageType: 'lookup' | 'distance' | 'unified' | 'bulk'): Step[] 
           position: 'bottom'
         }
       ];
+    case 'nearby':
+      return [
+        {
+          target: '.location-type-select',
+          content: 'First, select the type of location - Port or Postal/Door',
+          position: 'bottom'
+        },
+        commonSteps.country,
+        {
+          ...commonSteps.search,
+          content: 'Enter LOCODE/address and press Enter ↵'
+        },
+        {
+          target: '.radius-input',
+          content: 'Enter the radius to search for nearby locations',
+          position: 'bottom'
+        },
+        {
+          target: '.search-button',
+          content: 'Click to search for nearby locations',
+          position: 'bottom'
+        }
+      ];
   }
 };
 
-export const Guide: React.FC<{ 
-  pageType: 'lookup' | 'distance' | 'unified' | 'bulk';
+interface GuideProps {
+  pageType: 'lookup' | 'distance' | 'unified' | 'bulk' | 'nearby';
   forceShow?: boolean;
   onClose?: () => void;
-}> = ({ pageType, forceShow = false, onClose }) => {
+}
+
+export const Guide: React.FC<GuideProps> = ({ pageType, forceShow = false, onClose }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isOpen, setIsOpen] = useState(forceShow);
 

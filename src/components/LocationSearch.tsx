@@ -9,6 +9,7 @@ interface LocationSearchProps {
   selectedLocation: Location | null;
   onSearch: (value: string, countryCode: string, type: LocationType) => Promise<Location[]>;
   isDark: boolean;
+  allowPostal?: boolean;
 }
 
 export const LocationSearch: React.FC<LocationSearchProps> = ({
@@ -34,24 +35,46 @@ export const LocationSearch: React.FC<LocationSearchProps> = ({
 
   const selectedCountry = countryCode ? SUPPORTED_COUNTRIES[countryCode as keyof typeof SUPPORTED_COUNTRIES] : null;
 
-  const handleSearch = async () => {
-    if (!countryCode || !searchValue) {
-      setError('Please select a country and enter a search term');
-      return;
-    }
-
+  const handleSearch = async (value: string, countryCode: string, type: LocationType) => {
     setIsLoading(true);
     setError(null);
-
+    
+    if (!countryCode) {
+      setError('Please select a country first');
+      return [];
+    }
+    
     try {
-      const locations = await onSearch(searchValue, countryCode, locationType);
-      if (locations.length === 0) {
-        setError('No locations found');
-      } else {
-        onLocationSelect(locations[0]);
+      // For port searches, try both name and LOCODE
+      if (type === 'port') {
+        // Try name search first
+        const nameResults = await onSearch(value, countryCode, type);
+        if (nameResults && nameResults.length > 0) {
+          onLocationSelect(nameResults[0]);
+          return nameResults;
+        }
+        
+        // If no results, try LOCODE search
+        const locodeResults = await onSearch(value.toUpperCase(), countryCode, 'port');
+        if (locodeResults && locodeResults.length > 0) {
+          onLocationSelect(locodeResults[0]);
+          return locodeResults;
+        }
+        
+        setError('No ports found matching the search term');
+        return [];
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Search failed');
+      
+      // Handle postal searches
+      const results = await onSearch(value, countryCode, type);
+      if (results && results.length > 0) {
+        onLocationSelect(results[0]);
+      }
+      return results;
+    } catch (error) {
+      console.error('Search error:', error);
+      setError(error instanceof Error ? error.message : 'Search failed');
+      return [];
     } finally {
       setIsLoading(false);
     }
@@ -135,14 +158,14 @@ export const LocationSearch: React.FC<LocationSearchProps> = ({
               type="text"
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch(searchValue, countryCode, locationType)}
               placeholder={locationType === 'port' 
                 ? "Enter LOCODE (in CAPS) or port name..." 
                 : "Enter address or postal code..."}
               className={`${label === 'To' ? 'dest-search-input' : 'search-input'} w-full px-4 py-2 pr-12 rounded-lg border border-gray-300`}
             />
             <button
-              onClick={handleSearch}
+              onClick={() => handleSearch(searchValue, countryCode, locationType)}
               className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-gray-100"
             >
               {isLoading ? <Loader2 className="animate-spin" size={20} /> : <Search size={20} />}
