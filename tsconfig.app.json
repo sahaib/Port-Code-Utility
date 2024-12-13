@@ -20,5 +20,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "backend/src/api", "backend/src/services/portBulkService.ts"]
+  "include": ["src", "backend/src/api", "backend/src/services/portBulkService.ts", "backend/src/utils/dbTest.ts"]
 }
