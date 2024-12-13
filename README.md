@@ -1,104 +1,164 @@
-# Port Distance Calculator 🚢
+# Port Distance Calculator & UN/LOCODE Search Tool ⚓
 
-A React-based utility for calculating nautical distances between ports using UN/LOCODE data and MapBox visualization.
+A comprehensive React-based utility for maritime distance calculations, port lookups, and location-based port discovery using UN/LOCODE data.
 
 ## Features 🌟
 
-- Search ports by UN/LOCODE or name
-- Calculate nautical distances between ports
-- Interactive map visualization using MapBox
-- Country-based port filtering
-- Real-time distance calculations
-- Responsive design
+- 🔍 Advanced port search by UN/LOCODE or name
+- 📏 Multiple distance calculation modes:
+  - Port-to-port distances
+  - Unified distance calculator (ports and postal locations)
+  - Bulk distance calculations via CSV
+- 🗺️ Interactive map visualization with MapBox
+- 📍 Nearby ports discovery
+- 🌓 Dark/Light mode support
+- 📱 Fully responsive design
+- 🚀 Progressive Web App (PWA) support
 
 ## Prerequisites 📋
 
-Before you begin, ensure you have:
-- Node.js (v16 or higher)
+- Node.js (v18 or higher)
 - npm or yarn
 - MapBox API key
-- Internet connection (for UN/LOCODE data fetching)
+- Internet connection
 
 ## Installation 🛠️
 
 1. Clone the repository:
 ```
-git clone https://github.com/sahaib/Port-Code-Utility.git
+git clone https://github.com/yourusername/port-distance-calculator.git
 ```
 
 ```
-cd Port-Code-Utility
+cd port-distance-calculator
 ```
 
 2. Install dependencies:
+
 ```
 npm install
 ```
 
-3. Create a `.env` file in the root directory:
+
+3. Create a `.env` file:
+
 ```
-VITE_MAPBOX_API_KEY=your_mapbox_api_key
+VITE_MAPBOX_TOKEN=your_mapbox_token
 ```
 
-4. Start the development server:
+4. Start development server:
+
 ```
 npm run dev
 ```
 
+
 ## Environment Variables 🔐
 
-- `VITE_MAPBOX_TOKEN`: Your MapBox API token (Required for map visualization)
+Required environment variables:
+- `VITE_MAPBOX_TOKEN`: MapBox API token for map visualization
 
-## Data Sources 📚
+## Scripts 📜
 
-- **UN/LOCODE**: [UN/LOCODE Code List](https://unece.org/trade/cefact/unlocode-code-list-country-and-territory)
-- **MapBox**: [MapBox GL JS](https://docs.mapbox.com/mapbox-gl-js/)
+```
+typescript:package.json
+startLine: 6
+endLine: 15
+```
+
 
 ## Tech Stack 💻
 
-- React + TypeScript
-- Vite
-- TailwindCSS
-- MapBox GL JS
-- Lucide Icons
+- ⚛️ React 18 with TypeScript
+- ⚡ Vite for blazing-fast builds
+- 🎨 TailwindCSS with dark mode support
+- 🗺️ MapBox GL JS for mapping
+- 🎯 Lucide React for icons
+- 📱 PWA support with Workbox
+- 🔄 React Router v7 for navigation
 
-## API Reference 📖
+## Project Structure 📁
 
-### UN/LOCODE Data Structure
 ```
-interface PortData {
-locode: string; // UN/LOCODE
-name: string; // Port name
-coordinates: string; // Format: "DDMMN DDDMME"
-// ... other fields
-}
+src/
+├── components/ # React components
+├── config/ # Configuration files
+├── hooks/ # Custom React hooks
+├── services/ # API services
+├── types/ # TypeScript types
+├── utils/ # Utility functions
+└── styles/ # Global styles and Tailwind config
 ```
 
-### Distance Calculation
-- Uses the Haversine formula for nautical distance calculations
-- Coordinates are parsed from UN/LOCODE format (DDMMN DDDMME) to decimal degrees
 
-### MapBox API
-- The app uses MapBox GL JS for map visualization
-- The MapBox API key is required for the map to work
+## Features in Detail 🔍
 
-## Development
+### Port Lookup
+- Search ports by UN/LOCODE or name
+- Country-based filtering
+- Detailed port information display
 
-### CORS Proxy
-During development, the app uses the cors-anywhere proxy to handle CORS issues. This is **not** suitable for production use. Before deploying:
+### Distance Calculators
+- Standard port-to-port calculator
+- Unified calculator (ports and postal locations)
+- Bulk distance calculations with CSV support
+- Interactive map visualization
 
-1. Either set up your own proxy server
-2. Or handle CORS on your backend API
-3. Or use a production-ready CORS proxy service
+### Nearby Ports Search
+- Find ports within specified radius
+- Map visualization of search results
+- Distance and bearing calculations
 
-The proxy URL can be configured in `src/config/constants.ts`
+## Development 🛠️
+
+### CORS Handling
+The application uses a dedicated proxy for handling CORS:
+
+## Features in Detail 🔍
+
+### Port Lookup
+- Search ports by UN/LOCODE or name
+- Country-based filtering
+- Detailed port information display
+
+### Distance Calculators
+- Standard port-to-port calculator
+- Unified calculator (ports and postal locations)
+- Bulk distance calculations with CSV support
+- Interactive map visualization
+
+### Nearby Ports Search
+- Find ports within specified radius
+- Map visualization of search results
+- Distance and bearing calculations
+
+## Development 🛠️
+
+### CORS Handling
+The application uses a dedicated proxy for handling CORS:
+```
+typescript:src/config/constants.ts
+startLine: 2
+endLine: 4
+```
+
+### Building for Production
+```
+npm run build
+```
+
+This will:
+1. Build the web application
+2. Generate service worker
+3. Create optimized assets
+4. Generate PWA assets
 
 ## Contributing 🤝
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
 ## Credits 👏
@@ -109,11 +169,13 @@ The proxy URL can be configured in `src/config/constants.ts`
 
 ## License 📄
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - See [LICENSE](LICENSE) file
 
 ## Support 🆘
 
-For support, email [hello@sahaibsingh.com] or open an issue in the repository.
+For support:
+- Open an issue in the repository
+- Email: your.email@example.com
 
 ---
 
