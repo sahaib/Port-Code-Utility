@@ -5,6 +5,7 @@ export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     exclude: ['lucide-react'],
+    include: ['zod']
   },
   server: {
     port: 3001,
@@ -41,8 +42,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: './index.html'
-      },
-      external: ['zod']
+      }
     },
     modulePreload: {
       polyfill: true
