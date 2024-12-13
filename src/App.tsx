@@ -13,7 +13,6 @@ import { Guide } from './components/Guide';
 import { useDarkMode } from './hooks/useDarkMode';
 import { LoadingState } from './components/LoadingState';
 import { BulkDistanceCalculator } from './components/BulkDistanceCalculator';
-import { testDatabaseConnection } from '../backend/src/utils/dbTest';
 import { NearbyPortsSearch } from './components/NearbyPortsSearch';
 
 function App() {
@@ -95,11 +94,6 @@ function App() {
     setShowGuide(true);
   };
 
-  testDatabaseConnection().then(connected => {
-    if (!connected) {
-      console.error('⚠️ Database connection failed');
-    }
-  });
 
   return (
     <BrowserRouter>
